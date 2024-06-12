@@ -23,21 +23,24 @@ public class CoinsPanel extends JPanel{
     }
 
     private void activatePanel() {
-//        todo: ACTIVATE
         for (JButton button : buttons) {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String action = button.getActionCommand();
                     float valueOfCoin = labelToFloat(action);
-//                    System.out.println(valueOfCoin);
                     CoinsPanelEvent coinsPanelEvent = new CoinsPanelEvent(this,action,valueOfCoin);
                     if (coinsPanelListener != null){
                         coinsPanelListener.coinsPanelEventOccurred(coinsPanelEvent);
+
                     }
                 }
             });
         }
+    }
+
+    public void resetCoinsCounter(){
+        CoinsPanelEvent.setTotalInputValue(0);
     }
 
     public static float labelToFloat(String label) {

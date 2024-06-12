@@ -18,7 +18,6 @@ public class CoinsPanelEvent extends EventObject {
         this.valueOfCoin = valueOfCoin;
         this.coinButtonPressed = coinButtonPressed;
         totalInputValue+= valueOfCoin;
-
     }
 
     public String getCoinButtonPressed() {
@@ -31,5 +30,9 @@ public class CoinsPanelEvent extends EventObject {
 
     public float getTotalInputValue() {
         return totalInputValue;
+    }
+
+    public static void setTotalInputValue(float totalInputValue) {
+        CoinsPanelEvent.totalInputValue = totalInputValue;
     }
 }
