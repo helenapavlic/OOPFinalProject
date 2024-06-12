@@ -3,5 +3,6 @@ package VendingMachine;
 import java.util.EventListener;
 
 public interface CoinsPanelListener extends EventListener {
-    void coinsPanelEventOccurred(String buttonPressed);
+
+    void coinsPanelEventOccurred(CoinsPanelEvent coinsPanelEvent);
 }

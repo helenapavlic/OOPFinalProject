@@ -7,13 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class CoinsPanel extends JPanel implements ActionListener {
+public class CoinsPanel extends JPanel{
     private final String[] coinsArr = {"1c", "2c", "5c", "10c", "20c", "50c", "1€", "2€"};
     private JButton button;
     private ArrayList<JButton> buttons;
     private Font numbersFont = new Font("Calibri", Font.BOLD, 18);
 
-    CoinsPanelListener coinsPanelListener;
+    private CoinsPanelListener coinsPanelListener;
 
     public CoinsPanel() {
         initComponents();
@@ -25,7 +25,33 @@ public class CoinsPanel extends JPanel implements ActionListener {
     private void activatePanel() {
 //        todo: ACTIVATE
         for (JButton button : buttons) {
-            button.addActionListener(this);
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String action = button.getActionCommand();
+                    float valueOfCoin = labelToFloat(action);
+//                    System.out.println(valueOfCoin);
+                    CoinsPanelEvent coinsPanelEvent = new CoinsPanelEvent(this,action,valueOfCoin);
+                    if (coinsPanelListener != null){
+                        coinsPanelListener.coinsPanelEventOccurred(coinsPanelEvent);
+                    }
+                }
+            });
+        }
+    }
+
+    public static float labelToFloat(String label) {
+        if (label.endsWith("c")) {
+            // Ukloni 'c' i pretvori ostatak u centi
+            int cents = Integer.parseInt(label.substring(0, label.length() - 1));
+            // Konvertiraj centi u eure
+            return cents / 100.0f;
+        } else if (label.endsWith("€")) {
+            // Ukloni '€' i pretvori ostatak u eure
+            int euros = Integer.parseInt(label.substring(0, label.length() - 1));
+            return (float) euros;
+        } else {
+            throw new IllegalArgumentException("Nevažeća oznaka: " + label);
         }
     }
 
@@ -63,13 +89,5 @@ public class CoinsPanel extends JPanel implements ActionListener {
         this.coinsPanelListener = coinsPanelListener;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (coinsPanelListener!=null){
-            JButton clicked = (JButton) e.getSource();
-            coinsPanelListener.coinsPanelEventOccurred(clicked.getActionCommand());
-            System.out.println("clicked: " + clicked.getActionCommand());
-        }
 
-    }
 }

@@ -13,10 +13,25 @@ public class MainFrame extends JFrame {
         initComps();
         layoutComps();
         activateFrame();
-
     }
 
     private void activateFrame() {
+        coinsPanel.setCoinsPanelListener(new CoinsPanelListener() {
+            @Override
+            public void coinsPanelEventOccurred(CoinsPanelEvent coinsPanelEvent) {
+                String action = coinsPanelEvent.getCoinButtonPressed();
+                float valueInput = coinsPanelEvent.getValueOfCoin();
+                float totalInput = coinsPanelEvent.getTotalInputValue();
+//                test!
+                System.out.println(action);
+                System.out.println(valueInput);
+                System.out.println(totalInput);
+
+//               todo: postaviti vrijednost total input na text panel!
+                displayPanel.printAddedMoney(totalInput);
+            }
+        });
+
 
     }
 
