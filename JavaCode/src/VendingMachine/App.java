@@ -7,5 +7,8 @@ public class App {
         SwingUtilities.invokeLater(() -> {
             MainFrame mainFrame = new MainFrame();
         });
+//
+//        Item item = new Item("item1",1.00F);
+//        Item item1 = new Item("item2", 5.00F);
     }
 }
