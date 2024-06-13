@@ -5,6 +5,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemsPanel extends JPanel {
     private static List<JPanel> itemsPanels;
@@ -22,14 +23,7 @@ public class ItemsPanel extends JPanel {
     public ItemsPanel() {
         initComponents();
         layoutComponents();
-        activatePanel();
         borders();
-
-    }
-
-    private void activatePanel() {
-//        todo :ACTIVATE PANEL
-
     }
 
     private void initComponents() {
@@ -87,5 +81,23 @@ public class ItemsPanel extends JPanel {
         Border inner = BorderFactory.createTitledBorder("Items");
         Border outer = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         setBorder(BorderFactory.createCompoundBorder(outer, inner));
+    }
+
+
+    //    todo: check this method
+    public void updatePanel(Item item) {
+        this.item = item;
+        for (JPanel itemPanel : itemsPanels) {
+            JLabel productIdLabel = (JLabel) itemPanel.getComponent(0);
+            if (Objects.equals(productIdLabel.getText(), String.valueOf(item.getId()))) {
+                if (item.isAvailable()) {
+                    JLabel label = (JLabel) itemPanel.getComponent(3);
+                    label.setText("Quantity: " + item.getQuantity());
+                } else {
+                    JLabel label = (JLabel) itemPanel.getComponent(3);
+                    label.setText("Item is out of stock");
+                }
+            }
+        }
     }
 }

@@ -10,5 +10,11 @@ public class App {
 //
 //        Item item = new Item("item1",1.00F);
 //        Item item1 = new Item("item2", 5.00F);
+//
+//        Transaction transaction = new Transaction(item1,22.00F);
+//        System.out.println(transaction);
+//        Transaction transaction1 = new Transaction(item1,1.00F);
+//        System.out.println(transaction1);
+
     }
 }
