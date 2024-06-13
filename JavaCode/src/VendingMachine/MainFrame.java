@@ -8,7 +8,7 @@ public class MainFrame extends JFrame {
     private CoinsPanel coinsPanel;
     private DisplayPanel displayPanel;
 
-    public MainFrame(){
+    public MainFrame() {
         super("Vending machine");
         initComps();
         layoutComps();
@@ -26,9 +26,55 @@ public class MainFrame extends JFrame {
                 System.out.println(action);
                 System.out.println(valueInput);
                 System.out.println(totalInput);
-
-//               todo: postaviti vrijednost total input na text panel!
                 displayPanel.printAddedMoney(totalInput);
+            }
+        });
+
+        displayPanel.setDisplayPanelListener(new DisplayPanelListener() {
+            @Override
+            public void displayPanelToolBrEventOccurred(DisplayPanelToolBarEvent displayPanelToolBarEvent) {
+
+            }
+
+            @Override
+            public void numberPadEventOccurred(NumberPadEvent numberPadEvent) {
+                boolean isNumPressed = numberPadEvent.isIntNumPressed();
+                boolean isOkButtonPressed = numberPadEvent.isOkButtonPressed();
+                boolean isDelButtonPressed = numberPadEvent.isOkButtonPressed();
+
+                if (isNumPressed) {
+                    String textToPrint = numberPadEvent.getAction();
+                    System.out.println(textToPrint);
+                    displayPanel.printInputNumber(textToPrint);
+                    displayPanel.activateButtons();
+                } else if (isOkButtonPressed) {
+                    int userInput = displayPanel.getUserInput();
+//                    System.out.println(userInput);
+                    Item item = Item.getItemById(userInput);
+                    if (item == null) {
+                        System.out.println("item not found");
+                    } else {
+                        Transaction transaction = new Transaction(item, displayPanel.getInputMoney());
+                        System.out.println(transaction);
+                        itemsPanel.updatePanel(item);
+                        coinsPanel.resetCoinsCounter();
+                    }
+
+
+//                    todo: akcija za todo -> transakcij, spremanje i ispis
+//                    Transaction transaction = new Transaction()
+//                    pogledati input i ubačen novac i spremiti to u var
+//                    pronaći item po idu -> spremiti u item
+//                    napraviti transakciju
+//                    spremiti transakciju u csv
+//                    pop up prozor sa change i statusom transakcije
+//                    resetirati display panel
+
+//                    nakok klika na ok mora se resetirat brojac unosa
+                    displayPanel.reset();
+                } else {
+                    displayPanel.deleteLastInput();
+                }
             }
         });
 
