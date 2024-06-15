@@ -60,6 +60,9 @@ public class TextPanel extends JPanel {
         selectedItemTextArea.replaceSelection(null);
     }
 
+    public void setSelectedItemId(String text){
+        selectedItemTextArea.append(text);
+    }
     public int deleteLastNumberIdInput(){
         String modifiedString = selectedItemTextArea.getText().substring(0, selectedItemTextArea.getText().length() - 1);
         selectedItemTextArea.selectAll();
@@ -81,6 +84,9 @@ public class TextPanel extends JPanel {
     }
 
     public static float parseCurrency(String input) {
+        if (input.equalsIgnoreCase("")){
+            input = "0.00 €";
+        }
         input = input.replace("€", "").trim();
         NumberFormat format = NumberFormat.getInstance(Locale.GERMANY);
         try {

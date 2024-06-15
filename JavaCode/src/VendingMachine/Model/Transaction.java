@@ -10,8 +10,8 @@ import java.util.List;
 public class Transaction implements Serializable {
 
     private static final String filePath = "Data/transctions.bin";
-    private static final String SUCCESSFUL_TRANSACTION = "Success";
-    private static final String CANCELLED_TRANSACTION = "Cancelled";
+    private static final String SUCCESSFUL_TRANSACTION = "success";
+    private static final String CANCELLED_TRANSACTION = "cancelled";
     private static final String OUT_OF_STOCK_TRANSACTION = "stockError";
     private static final String ITEM_NOT_FOUND_TRANSACTION = "itemError";
     private static final String NOT_ENOUGH_TOTAL_MONEY_TRANSACTION = "moneyError";
@@ -54,16 +54,19 @@ public class Transaction implements Serializable {
             if (!item.isAvailable()){
                 this.transactionStatus = OUT_OF_STOCK_TRANSACTION;
                 this.isSuccessful = false;
+                this.change = inputMoney;
             } else if (userMoneyInput < itemPrice) {
                 this.transactionStatus = NOT_ENOUGH_TOTAL_MONEY_TRANSACTION;
                 this.isSuccessful = false;
+                this.change = calculateChange();
             } else {
                 this.transactionStatus = SUCCESSFUL_TRANSACTION;
                 this.isSuccessful = true;
                 this.remainingQuantity = --itemQuantity;
                 item.setQuantity(remainingQuantity);
+                this.change = calculateChange();
             }
-            this.change = calculateChange();
+
         }
 
         transactions.add(this);
@@ -192,7 +195,6 @@ public class Transaction implements Serializable {
                 ", itemId=" + itemId +
                 ", itemName='" + itemName + '\'' +
                 ", itemPrice=" + itemPrice +
-                ", itemQuantity=" + itemQuantity +
                 '}';
     }
 }

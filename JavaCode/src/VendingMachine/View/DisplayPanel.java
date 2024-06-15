@@ -20,7 +20,6 @@ public class DisplayPanel extends JPanel {
         borders();
     }
 
-
     private void layoutComponents() {
         setLayout(new BorderLayout(4, 4));
         add(numberPadPanel, BorderLayout.CENTER);
@@ -45,13 +44,33 @@ public class DisplayPanel extends JPanel {
         textPanel.showAddedMoney(formattedValue);
     }
 
+    public void printId(String num){
+        textPanel.setSelectedItemId(num);
+    }
+
     public void reset() {
         textPanel.reset();
         numberPadPanel.reset();
     }
 
+    public void activateInactiveButtons(){
+        numberPadPanel.activateNumPadButtons();
+
+    }
+
     public float getInputMoney() {
         return textPanel.readTotalMoneyInputTextField();
+    }
+
+    public int getItemId(){
+        return textPanel.readItemIdTextFiled();
+    }
+
+    public void deleteLastNumIdInput(){
+        int lenOfNewText = textPanel.deleteLastNumberIdInput();
+        if (lenOfNewText<1){
+            numberPadPanel.reset();
+        }
     }
 
     public void setDisplayPanelListener(DisplayPanelListener displayPanelListener) {

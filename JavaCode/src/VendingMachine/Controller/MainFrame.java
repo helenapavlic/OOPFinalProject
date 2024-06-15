@@ -31,9 +31,54 @@ public class MainFrame extends JFrame {
         displayPanel.setDisplayPanelListener(new DisplayPanelListener() {
             @Override
             public void displayPanelEventOccurred(DisplayPanelEvent displayPanelEvent) {
+                String action = displayPanelEvent.getAction();
 
+//                todo: provjeriti postoji li bin file i po tome postaviti transaction cnt
+//                todo: ako postoji bin file porčitati id spremljenog objekta
+//                todo: metoda za spremanje objekta transakcije!!!
+                if (action.equalsIgnoreCase("ok")) {
+                    int itemId = displayPanel.getItemId();
+                    float moneyInput = displayPanel.getInputMoney();
+                    Transaction transaction = new Transaction(itemId, moneyInput);
+                    String transactionStatus = transaction.getTransactionStatus();
+                    float change = transaction.getChange();
+                    String formattedChange = String.format("%.2f", change);
+                    if (transactionStatus.equalsIgnoreCase("success")) {
+                        itemsPanel.updatePanel(transaction.getItem());
+                        JOptionPane.showMessageDialog(MainFrame.this, "Successful transaction! \nChange: " + formattedChange + "€", "Successful transaction", JOptionPane.INFORMATION_MESSAGE);
+                        displayPanel.reset();
+                        coinsPanel.resetCoinsCounter();
+                    } else if (transactionStatus.equalsIgnoreCase("stockError")) {
+                        JOptionPane.showMessageDialog(MainFrame.this, "Item is out of stock! \nChange: " + formattedChange + "€", "Item out of stock", JOptionPane.ERROR_MESSAGE);
+                        displayPanel.reset();
+                        coinsPanel.resetCoinsCounter();
+                    } else if (transactionStatus.equalsIgnoreCase("moneyError")) {
+                        JOptionPane.showMessageDialog(MainFrame.this, "Not enough money for transaction!", "Not enough founds", JOptionPane.ERROR_MESSAGE);
+                    } else if (transactionStatus.equalsIgnoreCase("itemError")) {
+                        JOptionPane.showMessageDialog(MainFrame.this, "Check input number!", "Item does not exist", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(MainFrame.this, "Unknown action!", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else if (action.equalsIgnoreCase("del")) {
+                    displayPanel.deleteLastNumIdInput();
+                } else if (action.equalsIgnoreCase("cancel")) {
+                    float inputMoney = displayPanel.getInputMoney();
+                    Transaction transaction = new Transaction(inputMoney);
+                    float change = transaction.getChange();
+                    String formattedChange = String.format("%.2f", change);
 
+                    JOptionPane.showMessageDialog(MainFrame.this, "Cancelled transaction! \nChange: " + formattedChange + "€", "Cancel transaction", JOptionPane.ERROR_MESSAGE);
 
+                    displayPanel.reset();
+                    coinsPanel.resetCoinsCounter();
+                } else if (action.equalsIgnoreCase("admin")) {
+//                    pokreni admin prijavu
+//                    todo: ADMIN
+
+                } else {
+                    displayPanel.activateInactiveButtons();
+                    displayPanel.printId(action);
+                }
             }
         });
 
