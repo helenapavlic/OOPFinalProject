@@ -1,9 +1,7 @@
 package VendingMachine.Controller;
 
 import VendingMachine.Model.*;
-import VendingMachine.View.CoinsPanel;
-import VendingMachine.View.DisplayPanel;
-import VendingMachine.View.ItemsPanel;
+import VendingMachine.View.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,8 +65,18 @@ public class MainFrame extends JFrame {
                     displayPanel.reset();
                     coinsPanel.resetCoinsCounter();
                 } else if (action.equalsIgnoreCase("admin")) {
-//                    pokreni admin prijavu
-//                    todo: ADMIN
+                    AdminLoginFrame adminLoginFrame = new AdminLoginFrame();
+                    adminLoginFrame.setAdminLoginListener(new AdminLoginListener() {
+                        @Override
+                        public void adminLoginEventOccurred(AdminLoginEvent adminLoginEvent) {
+                            if (adminLoginEvent.isLoginSuccessful()) {
+                                openAdminFrame();
+                            } else {
+                                JOptionPane.showMessageDialog(MainFrame.this, "Login failed!", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    });
+
 
                 } else {
                     displayPanel.activateInactiveButtons();
@@ -78,6 +86,10 @@ public class MainFrame extends JFrame {
         });
 
 
+    }
+
+    private void openAdminFrame() {
+        new AdminMainFrame();
     }
 
 

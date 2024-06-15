@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ItemsPanel extends JPanel {
+//    todo: ISPIS CIJENE -> NAPRAVITI DA JE ODVOJEN TOČKOM I DA JE ZAOKRUŽEN NA 2 DECIMALE
     private static List<JPanel> itemsPanels;
     private final int NUM_PLACES = 12;
     JLabel productIdLabel;
@@ -56,6 +57,7 @@ public class ItemsPanel extends JPanel {
 
         productIdLabel = new JLabel(String.valueOf(item.getId()));
         productNameLabel = new JLabel(item.getItemName());
+//        priceLabel = new JLabel(String.format("Price: %.2f €", item.getPrice()));
         priceLabel = new JLabel("Price: " + item.getPrice() + " €");
         quantityLabel = new JLabel("Quantity: " + item.getQuantity());
 

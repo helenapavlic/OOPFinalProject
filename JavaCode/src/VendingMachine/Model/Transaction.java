@@ -67,6 +67,7 @@ public class Transaction implements Serializable {
         }
 
         transactions.add(this);
+        AUX_CLS.printListItems(transactions);
         AUX_CLS.saveTransactions(transactions, filePath);
     }
 

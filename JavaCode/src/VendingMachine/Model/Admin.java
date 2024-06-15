@@ -1,14 +1,10 @@
 package VendingMachine.Model;
 
 public class Admin {
-    private final String USER_NAME = "Admin";
-    private final String PASSWORD = "admin";
+    private static final String USER_NAME = "Admin";
+    private static final String PASSWORD = "admin";
 
-    public String getUSER_NAME() {
-        return USER_NAME;
-    }
-
-    public String getPASSWORD() {
-        return PASSWORD;
+    public static boolean checkLogin(String username, String pass){
+        return username.equals(USER_NAME) && pass.equals(PASSWORD);
     }
 }

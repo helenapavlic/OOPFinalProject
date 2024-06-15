@@ -7,6 +7,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class DisplayPanel extends JPanel {
+    //    todo: ISPIS INPUTA -> TEXT PANEL -> NAPRAVITI DA JE ODVOJEN TOČKOM I DA JE ZAOKRUŽEN NA 2 DECIMALE
     private NumberPadPanel numberPadPanel;
     private TextPanel textPanel;
     private ToolBarPanel toolBarPanel;
