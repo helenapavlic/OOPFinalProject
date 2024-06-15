@@ -1,7 +1,7 @@
 package VendingMachine.View;
 
 import VendingMachine.Model.CoinsPanelEvent;
-import VendingMachine.Model.CoinsPanelListener;
+import VendingMachine.Controller.CoinsPanelListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;

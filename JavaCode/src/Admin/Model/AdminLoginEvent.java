@@ -1,4 +1,4 @@
-package VendingMachine.Model;
+package Admin.Model;
 
 public class AdminLoginEvent {
     private boolean loginSuccessful;

@@ -1,6 +1,7 @@
 package VendingMachine.View;
 
-import VendingMachine.Model.DisplayPanelListener;
+import Admin.View.ToolBarPanel;
+import VendingMachine.Controller.DisplayPanelListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;

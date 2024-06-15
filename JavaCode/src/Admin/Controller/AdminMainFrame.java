@@ -1,4 +1,8 @@
-package VendingMachine.View;
+package Admin.Controller;
+
+import Admin.View.AdminMenuBar;
+import Admin.View.FilterPanel;
+import Admin.View.ViewPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +35,7 @@ public class AdminMainFrame extends JFrame {
         setSize(900, 600);
         setResizable(false);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
 
         adminMenuBar = new AdminMenuBar();

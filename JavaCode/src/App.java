@@ -1,5 +1,3 @@
-package VendingMachine;
-
 import VendingMachine.Controller.MainFrame;
 
 import javax.swing.*;

@@ -1,4 +1,4 @@
-package VendingMachine.Model;
+package Admin.Model;
 
 public class Admin {
     private static final String USER_NAME = "Admin";

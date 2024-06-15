@@ -1,4 +1,4 @@
-package VendingMachine.View;
+package Admin.View;
 
 import javax.swing.*;
 

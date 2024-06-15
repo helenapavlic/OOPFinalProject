@@ -1,8 +1,8 @@
-package VendingMachine.View;
+package Admin.View;
 
-import VendingMachine.Model.Admin;
-import VendingMachine.Model.AdminLoginEvent;
-import VendingMachine.Model.AdminLoginListener;
+import Admin.Model.Admin;
+import Admin.Model.AdminLoginEvent;
+import Admin.Controller.AdminLoginListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,6 +20,16 @@ public class AdminLoginFrame extends JFrame {
         JPanel panel = createFormPanel();
         add(panel);
         setVisible(true);
+
+        // Postavi akciju za Control + Enter
+        KeyStroke keyStroke = KeyStroke.getKeyStroke("control ENTER");
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, "login");
+        panel.getActionMap().put("login", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleLogin();
+            }
+        });
     }
 
     private void initializeFrame() {

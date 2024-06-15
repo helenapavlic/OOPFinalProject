@@ -1,5 +1,9 @@
 package VendingMachine.Controller;
 
+import Admin.Controller.AdminLoginListener;
+import Admin.Controller.AdminMainFrame;
+import Admin.Model.AdminLoginEvent;
+import Admin.View.AdminLoginFrame;
 import VendingMachine.Model.*;
 import VendingMachine.View.*;
 
@@ -71,8 +75,6 @@ public class MainFrame extends JFrame {
                         public void adminLoginEventOccurred(AdminLoginEvent adminLoginEvent) {
                             if (adminLoginEvent.isLoginSuccessful()) {
                                 openAdminFrame();
-                            } else {
-                                JOptionPane.showMessageDialog(MainFrame.this, "Login failed!", "Error", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     });
@@ -92,17 +94,7 @@ public class MainFrame extends JFrame {
         new AdminMainFrame();
     }
 
-
-    private void loginAdmin() {
-        String userName;
-        String password;
-
-//        todo: ADMIN LOGIN FRAME
-//        todo: ADMIN FRAME
-    }
-
     private void layoutComps() {
-
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 

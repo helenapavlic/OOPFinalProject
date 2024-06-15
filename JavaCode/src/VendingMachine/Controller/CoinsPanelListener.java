@@ -1,4 +1,6 @@
-package VendingMachine.Model;
+package VendingMachine.Controller;
+
+import VendingMachine.Model.CoinsPanelEvent;
 
 import java.util.EventListener;
 

@@ -1,4 +1,6 @@
-package VendingMachine.View;
+package Admin.View;
+
+import Admin.Controller.AdminMenuBarListener;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
