@@ -1,5 +1,7 @@
 package VendingMachine;
 
+import VendingMachine.Controller.MainFrame;
+
 import javax.swing.*;
 
 public class App {
@@ -15,6 +17,7 @@ public class App {
 //        System.out.println(transaction);
 //        Transaction transaction1 = new Transaction(item1,1.00F);
 //        System.out.println(transaction1);
+
 
     }
 }

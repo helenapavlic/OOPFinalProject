@@ -1,4 +1,4 @@
-package VendingMachine;
+package VendingMachine.View;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -7,8 +7,8 @@ import java.awt.*;
 public class DisplayPanel extends JPanel {
     private NumberPadPanel numberPadPanel;
     private TextPanel textPanel;
-    private DisplayPanelToolBar displayPanelToolBar;
-    private DisplayPanelListener displayPanelListener;
+    private ToolBarPanel toolBarPanel;
+
 
     public DisplayPanel() {
         setPreferredSize(new Dimension(0, 0));
@@ -19,19 +19,21 @@ public class DisplayPanel extends JPanel {
     }
 
     private void activatePanel() {
+
+
     }
 
     private void layoutComponents() {
         setLayout(new BorderLayout(4, 4));
         add(numberPadPanel, BorderLayout.CENTER);
         add(textPanel, BorderLayout.NORTH);
-        add(displayPanelToolBar, BorderLayout.SOUTH);
+        add(toolBarPanel, BorderLayout.SOUTH);
     }
 
     private void initComponents() {
         numberPadPanel = new NumberPadPanel();
         textPanel = new TextPanel();
-        displayPanelToolBar = new DisplayPanelToolBar();
+        toolBarPanel = new ToolBarPanel();
     }
 
     private void borders() {
@@ -42,39 +44,16 @@ public class DisplayPanel extends JPanel {
 
     public void printAddedMoney(float totalMoney) {
         String formattedValue = String.format("%.2f", totalMoney);
-        textPanel.printAddedMoney(formattedValue);
-    }
-
-    public void printInputNumber(String text) {
-        textPanel.printNumSelection(text);
-    }
-
-    public void activateButtons() {
-        numberPadPanel.activateInactiveButtons();
-    }
-
-    public void deleteLastInput() {
-        int lenOfNewStr = textPanel.deleteLastInputNum();
-        if (lenOfNewStr == 0) {
-            numberPadPanel.deactivateDel();
-        }
+        textPanel.showAddedMoney(formattedValue);
     }
 
     public void reset() {
-        textPanel.clearTextArea();
+        textPanel.reset();
         numberPadPanel.reset();
     }
 
-    public int getUserInput() {
-        return Integer.parseInt(textPanel.readInputTextField());
-    }
-
     public float getInputMoney() {
-        return textPanel.readTotalTextField();
+        return textPanel.readTotalMoneyInputTextField();
     }
 
-    public void setDisplayPanelListener(DisplayPanelListener displayPanelListener) {
-        this.displayPanelListener = displayPanelListener;
-        numberPadPanel.setDisplayPanelListener(displayPanelListener);
-    }
 }

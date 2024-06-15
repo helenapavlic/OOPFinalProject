@@ -1,4 +1,4 @@
-package VendingMachine;
+package VendingMachine.View;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,48 +45,47 @@ public class TextPanel extends JPanel {
         inputLabel.setFont(smallerFont);
     }
 
-    public void printAddedMoney(String value) {
+    public void showAddedMoney(String value) {
         totalTextArea.selectAll();
         totalTextArea.replaceSelection(value + " €");
     }
-    public void printNumSelection(String text){
+    public void showItemIDInput(String text){
         selectedItemTextArea.append(text);
     }
 
-    public void clearTextArea() {
+    public void reset() {
         totalTextArea.selectAll();
         totalTextArea.replaceSelection(null);
         selectedItemTextArea.selectAll();
         selectedItemTextArea.replaceSelection(null);
     }
 
-    public int deleteLastInputNum(){
+    public int deleteLastNumberIdInput(){
         String modifiedString = selectedItemTextArea.getText().substring(0, selectedItemTextArea.getText().length() - 1);
         selectedItemTextArea.selectAll();
         selectedItemTextArea.replaceSelection(modifiedString);
         return modifiedString.length();
     }
 
-    public String readInputTextField() {
-        return selectedItemTextArea.getText();
+    public int readItemIdTextFiled() {
+        return Integer.parseInt(selectedItemTextArea.getText());
     }
 
-    public float readTotalTextField(){
+    public float readTotalMoneyInputTextField(){
         String text = totalTextArea.getText();
-        float num = parseCurrency(text);
+        float num = 0.0f;
+        if (text!=null){
+            num = parseCurrency(text);
+        }
         return num;
-
-//        return Float.parseFloat(totalTextArea.getText());
     }
 
     public static float parseCurrency(String input) {
-        // Ukloni simbol valute i sve bijele prostore
         input = input.replace("€", "").trim();
-
-        // Koristi NumberFormat za parsiranje broja sa zarezom kao decimalnim separatorom
         NumberFormat format = NumberFormat.getInstance(Locale.GERMANY);
         try {
             Number number = format.parse(input);
+            System.out.println(number);
             return number.floatValue();
         } catch (ParseException e) {
             System.err.println("Greška prilikom parsiranja valute: " + e.getMessage());

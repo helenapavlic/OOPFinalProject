@@ -1,31 +1,28 @@
-package VendingMachine;
+package VendingMachine.View;
+
 
 import javax.swing.*;
 import java.awt.*;
 
-public class DisplayPanelToolBar extends JPanel {
+public class ToolBarPanel extends JPanel{
     private JButton adminButton;
     private JButton cancelButton;
     private Font numFont = new Font("Arial", Font.PLAIN, 18);
 
-    private DisplayPanelListener displayPanelListener;
 
-
-    public DisplayPanelToolBar(){
+    public ToolBarPanel(){
         initComponents();
         layoutComponents();
         activateComponents();
     }
 
     private void activateComponents() {
-
     }
 
     private void layoutComponents() {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         add(adminButton);
         add(cancelButton);
-
     }
 
     private void initComponents() {
@@ -41,7 +38,4 @@ public class DisplayPanelToolBar extends JPanel {
 
     }
 
-    public void setDisplayPanelListener(DisplayPanelListener displayPanelListener) {
-        this.displayPanelListener = displayPanelListener;
-    }
 }

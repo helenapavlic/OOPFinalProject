@@ -1,4 +1,7 @@
-package VendingMachine;
+package VendingMachine.View;
+
+import VendingMachine.Model.Item;
+import VendingMachine.Model.allItems;
 
 import javax.swing.*;
 import javax.swing.border.Border;

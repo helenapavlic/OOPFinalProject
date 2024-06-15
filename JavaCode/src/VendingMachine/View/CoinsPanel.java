@@ -1,4 +1,7 @@
-package VendingMachine;
+package VendingMachine.View;
+
+import VendingMachine.Model.CoinsPanelEvent;
+import VendingMachine.Model.CoinsPanelListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -7,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class CoinsPanel extends JPanel{
+public class CoinsPanel extends JPanel {
     private final String[] coinsArr = {"1c", "2c", "5c", "10c", "20c", "50c", "1€", "2€"};
     private JButton button;
     private ArrayList<JButton> buttons;
@@ -22,6 +25,21 @@ public class CoinsPanel extends JPanel{
         borders();
     }
 
+    public static float labelToFloat(String label) {
+        float floatToReturn;
+        if (label.endsWith("c")) {
+            int cents = Integer.parseInt(label.substring(0, label.length() - 1));
+            floatToReturn = cents / 100.0f;
+        } else if (label.endsWith("€")) {
+            int euros = Integer.parseInt(label.substring(0, label.length() - 1));
+            floatToReturn = (float) euros;
+        } else {
+            System.out.println("no input money");
+            floatToReturn = 0.00f;
+        }
+        return floatToReturn;
+    }
+
     private void activatePanel() {
         for (JButton button : buttons) {
             button.addActionListener(new ActionListener() {
@@ -29,33 +47,17 @@ public class CoinsPanel extends JPanel{
                 public void actionPerformed(ActionEvent e) {
                     String action = button.getActionCommand();
                     float valueOfCoin = labelToFloat(action);
-                    CoinsPanelEvent coinsPanelEvent = new CoinsPanelEvent(this,action,valueOfCoin);
-                    if (coinsPanelListener != null){
+                    CoinsPanelEvent coinsPanelEvent = new CoinsPanelEvent(this, action, valueOfCoin);
+                    if (coinsPanelListener != null) {
                         coinsPanelListener.coinsPanelEventOccurred(coinsPanelEvent);
-
                     }
                 }
             });
         }
     }
 
-    public void resetCoinsCounter(){
+    public void resetCoinsCounter() {
         CoinsPanelEvent.setTotalInputValue(0);
-    }
-
-    public static float labelToFloat(String label) {
-        if (label.endsWith("c")) {
-            // Ukloni 'c' i pretvori ostatak u centi
-            int cents = Integer.parseInt(label.substring(0, label.length() - 1));
-            // Konvertiraj centi u eure
-            return cents / 100.0f;
-        } else if (label.endsWith("€")) {
-            // Ukloni '€' i pretvori ostatak u eure
-            int euros = Integer.parseInt(label.substring(0, label.length() - 1));
-            return (float) euros;
-        } else {
-            throw new IllegalArgumentException("Nevažeća oznaka: " + label);
-        }
     }
 
     private void layoutComponents() {

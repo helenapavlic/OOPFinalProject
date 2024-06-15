@@ -1,4 +1,4 @@
-package VendingMachine;
+package VendingMachine.Model;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,14 @@ public class Item {
         this.price = price;
         this.quantity = INITIAL_QUANTITY;
         items.add(this);
-        System.out.println("added item: " + this);
+//        System.out.println("added item: " + this);
+    }
+
+    public Item(int itemId, String itemName, float itemPrice, int itemQuantity) {
+        this.id = itemId;
+        this.itemName = itemName;
+        this.price = itemPrice;
+        this.quantity = itemQuantity;
     }
 
     public static Item getItemById(int userInput) {
@@ -46,8 +53,8 @@ public class Item {
         return quantity;
     }
 
-    public void soldItem() {
-        quantity--;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public boolean isAvailable() {
