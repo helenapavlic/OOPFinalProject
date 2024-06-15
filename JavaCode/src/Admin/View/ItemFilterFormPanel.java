@@ -1,21 +1,23 @@
 package Admin.View;
 
+import VendingMachine.Model.Item;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ItemFilterFormPanel extends JPanel {
-    private JTextField dateFrom;
-    private JTextField dateTo;
+    private JList<String> itemsList;
+    private JScrollPane itemsListScrollPane;
 
-    private JCheckBox isSuccessful;
-    private JComboBox<String> transactionStatus;
+    private JCheckBox useInStockFilter;
+    private JRadioButton itemInStock;
+    private JRadioButton itemOutOfStock;
+    private ButtonGroup buttonGroup;
 
-    private JTextField transactionId;
-    private JTextField moneyLowerBound;
-    private JTextField moneyUpperBound;
     private JButton apply;
-    private JButton reset;
+
 
     public ItemFilterFormPanel() {
         InitComponents();
@@ -46,96 +48,64 @@ public class ItemFilterFormPanel extends JPanel {
         gc.anchor = GridBagConstraints.LINE_START;
 
         gc.gridy++;
-        add(new JLabel("Date from:"), gc);
-        add(Box.createHorizontalStrut(20),gc);
+        add(new JLabel("Items:"), gc);
+        add(Box.createHorizontalStrut(50), gc);
         gc.gridx++;
-        add(dateFrom, gc);
+        add(itemsListScrollPane, gc);
 
-        add(Box.createVerticalStrut(40), gc);
+        add(Box.createVerticalStrut(60), gc);
 
         gc.gridx = 0;
         gc.gridy++;
-        add(new JLabel("Date to: "),gc);
+        add(useInStockFilter, gc);
+
+        add(Box.createVerticalStrut(40), gc);
+
+        gc.gridy++;
+        add(itemInStock, gc);
         gc.gridx++;
-        add(dateTo,gc);
+        add(itemOutOfStock, gc);
 
-//        gc.gridy++;
-//        add(Box.createVerticalStrut(25), gc);
-//
-//        gc.gridy++;
-//        add(new JLabel("Product category:"), gc);
-//        gc.gridy++;
-//        add(productCatScrollPane, gc);
-//
-//        gc.gridy = 0;
-//        gc.gridx++;
-//        add(Box.createHorizontalStrut(25), gc);
-//
-//        gc.gridx++;
-//        gc.gridy++;
-////        add(Box.createVerticalStrut(5), gc);
-//
-//        gc.anchor = GridBagConstraints.FIRST_LINE_START;
-//        add(new JLabel("Additional choices:"), gc);
-//        gc.gridy++;
-//        add(giftBoxCheckBox, gc);
-//        gc.gridy++;
-//        add(newsLetterCheckBox, gc);
-//        gc.gridy++;
-//        add(specialMessageCheckBox, gc);
-//
-//        gc.weighty = 0.5;
-//        gc.gridy++;
-//        gc.anchor = GridBagConstraints.CENTER;
-//        add(specialMessageTextField, gc);
-//
-//        gc.gridy = 0;
-//        gc.gridx++;
-//        add(Box.createHorizontalStrut(25), gc);
-//
-//        gc.gridx++;
-//        gc.gridy+=2;
-//        add(expressRadioButton, gc);
-//        gc.gridy++;
-//        add(standardRadioButton, gc);
-//        gc.gridy++;
-//        add(Box.createVerticalStrut(20), gc);
-//        gc.gridy++;
-//        add(submitButton, gc);
+        add(Box.createVerticalStrut(40), gc);
 
-
+        gc.gridy++;
+        gc.gridx++;
+        add(apply, gc);
     }
 
     private void InitComponents() {
         setPreferredSize(new Dimension(440, getHeight()));
+        itemsList = new JList<>();
+        itemsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        dateFrom = new JTextField(10);
-        dateTo = new JTextField(10);
-        isSuccessful = new JCheckBox("Show only successful transactions");
-        isSuccessful.setActionCommand("IS_SUCCESSFUL");
-//        isSuccessful.setSelected(true);
+        DefaultListModel<String> catModel = new DefaultListModel<>();
+        ArrayList<Item> items = Item.getItems();
+        for (Item item : items) {
+            catModel.addElement(item.getItemName());
+        }
+        itemsList.setModel(catModel);
+        itemsList.setVisibleRowCount(4);
+        itemsListScrollPane = new JScrollPane(itemsList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        itemsListScrollPane.setBorder(BorderFactory.createEtchedBorder());
 
-        transactionStatus = new JComboBox<>();
-        DefaultComboBoxModel<String> transactionModel = new DefaultComboBoxModel<>();
-        transactionModel.addElement("Successful transaction");
-        transactionModel.addElement("Not enough money error");
-        transactionModel.addElement("Item out of stock error");
-        transactionModel.addElement("Cancelled transaction");
-        transactionStatus.setModel(transactionModel);
-        // set default selection none and disabled
-        transactionStatus.setSelectedIndex(-1);
 
-        transactionId = new JTextField(5);
-        moneyLowerBound = new JTextField(5);
-        moneyUpperBound = new JTextField(5);
+        useInStockFilter = new JCheckBox("Use item in stock filter");
+        useInStockFilter.setActionCommand("USE_STOCK_FILTER");
+        useInStockFilter.setSelected(false);
+
+
+        itemInStock = new JRadioButton("In stock");
+        itemOutOfStock = new JRadioButton("Out of stock");
+        itemInStock.setActionCommand("IN_STOCK");
+        itemOutOfStock.setActionCommand("OUT_OF_STOCK");
+
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(itemInStock);
+        buttonGroup.add(itemOutOfStock);
+        itemInStock.setEnabled(false);
+        itemOutOfStock.setEnabled(false);
 
         apply = new JButton("Apply");
-        apply.setActionCommand("APPLY_TRANSACTION");
-
-
-
-
-
-
+        apply.setActionCommand("APPLY_ITEM");
     }
 }

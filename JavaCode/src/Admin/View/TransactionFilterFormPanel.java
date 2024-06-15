@@ -49,6 +49,7 @@ public class TransactionFilterFormPanel extends JPanel {
 
         gridBagConstraints.gridy++;
         add(new JLabel("Date from:"), gridBagConstraints);
+
         gridBagConstraints.gridx++;
         add(dateFrom, gridBagConstraints);
 
@@ -65,15 +66,20 @@ public class TransactionFilterFormPanel extends JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy++;
         add(new JLabel("Transaction status: "), gridBagConstraints);
+//        add(Box.createHorizontalStrut(50),gridBagConstraints);
+        gridBagConstraints.anchor = GridBagConstraints.LINE_END;
         gridBagConstraints.gridx++;
         add(transactionStatus, gridBagConstraints);
 
         add(Box.createVerticalStrut(40), gridBagConstraints);
 
+        gridBagConstraints.anchor = GridBagConstraints.LINE_START;
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy++;
         add(new JLabel("Transaction id: "), gridBagConstraints);
+
         gridBagConstraints.gridx++;
+
         add(transactionId, gridBagConstraints);
 
         add(Box.createVerticalStrut(40), gridBagConstraints);

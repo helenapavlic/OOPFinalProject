@@ -13,7 +13,8 @@ public class AdminMenuBar extends JMenuBar implements ActionListener {
     private JMenuItem exportDataItem;
     private JMenuItem importDataItem;
     private JMenuItem exitItem;
-    private JMenuItem clearTextItem;
+    private JMenuItem clearTableItem;
+    private JMenuItem clearFormItem;
     private AdminMenuBarListener adminMenuBarListener;
 
 
@@ -26,12 +27,12 @@ public class AdminMenuBar extends JMenuBar implements ActionListener {
         exportDataItem.addActionListener(this);
         importDataItem.addActionListener(this);
         exitItem.addActionListener(this);
-        clearTextItem.addActionListener(this);
+        clearTableItem.addActionListener(this);
         // set ActionCommands
         exportDataItem.setActionCommand("Export Data");
         importDataItem.setActionCommand("Import Data");
         exitItem.setActionCommand("Exit");
-        clearTextItem.setActionCommand("Clear Text");
+        clearTableItem.setActionCommand("Clear Text");
     }
 
     private void initMenuBar() {
@@ -56,11 +57,15 @@ public class AdminMenuBar extends JMenuBar implements ActionListener {
         importDataItem.setAccelerator(KeyStroke.getKeyStroke("control I"));
         exitItem.setAccelerator(KeyStroke.getKeyStroke("control X"));
 
-        clearTextItem = new JMenuItem("Clear Text");
-        editMenu.add(clearTextItem);
+        clearTableItem = new JMenuItem("Clear Table");
+        clearFormItem = new JMenuItem("Clear Form");
+        editMenu.add(clearFormItem);
+        editMenu.add(clearTableItem);
         add(editMenu);
-        // accelerator for clear text
-        clearTextItem.setAccelerator(KeyStroke.getKeyStroke("control T"));
+
+        clearTableItem.setAccelerator(KeyStroke.getKeyStroke("control T"));
+        clearFormItem.setAccelerator(KeyStroke.getKeyStroke("control F"));
+
     }
 
     @Override
@@ -77,7 +82,7 @@ public class AdminMenuBar extends JMenuBar implements ActionListener {
             if (adminMenuBarListener != null) {
                 adminMenuBarListener.menuBarEventOccurred("Exit");
             }
-        } else if (aev.getSource() == clearTextItem) {
+        } else if (aev.getSource() == clearTableItem) {
             if (adminMenuBarListener != null) {
                 adminMenuBarListener.menuBarEventOccurred("Clear Text");
             }
