@@ -1,5 +1,7 @@
 package VendingMachine.View;
 
+import VendingMachine.Model.DisplayPanelListener;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -8,20 +10,16 @@ public class DisplayPanel extends JPanel {
     private NumberPadPanel numberPadPanel;
     private TextPanel textPanel;
     private ToolBarPanel toolBarPanel;
+    private DisplayPanelListener displayPanelListener;
 
 
     public DisplayPanel() {
         setPreferredSize(new Dimension(0, 0));
         initComponents();
         layoutComponents();
-        activatePanel();
         borders();
     }
 
-    private void activatePanel() {
-
-
-    }
 
     private void layoutComponents() {
         setLayout(new BorderLayout(4, 4));
@@ -56,4 +54,10 @@ public class DisplayPanel extends JPanel {
         return textPanel.readTotalMoneyInputTextField();
     }
 
+    public void setDisplayPanelListener(DisplayPanelListener displayPanelListener) {
+        this.displayPanelListener = displayPanelListener;
+        toolBarPanel.setDisplayPanelListener(displayPanelListener);
+        numberPadPanel.setDisplayPanelListener(displayPanelListener);
+
+    }
 }

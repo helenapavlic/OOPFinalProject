@@ -29,12 +29,14 @@ public class DisplayPanelEvent extends EventObject {
         } else {
             transaction = new Transaction(inputMoney);
         }
-
     }
 
     public DisplayPanelEvent(Object source, String action) {
         super(source);
         this.action = action;
+        this.inputMoney = 0.0f;
+        this.itemIdInput = 0;
+        this.transaction = null;
     }
 
     public float getInputMoney() {

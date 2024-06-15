@@ -1,8 +1,13 @@
 package VendingMachine.View;
 
 
+import VendingMachine.Model.DisplayPanelEvent;
+import VendingMachine.Model.DisplayPanelListener;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class NumberPadPanel extends JPanel {
@@ -15,6 +20,7 @@ public class NumberPadPanel extends JPanel {
     private JButton numberPadButton;
     private ArrayList<JButton> numPadButtons = new ArrayList<>();
     private Font numFont = new Font("Arial", Font.PLAIN, 20);
+    private DisplayPanelListener displayPanelListener;
 
 
     public NumberPadPanel() {
@@ -25,7 +31,20 @@ public class NumberPadPanel extends JPanel {
 
     private void activateComponents() {
         for (JButton button : numPadButtons) {
-//            button.addActionListener(this);
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String action = button.getActionCommand();
+                    DisplayPanelEvent displayPanelEvent = new DisplayPanelEvent(this, action);
+                    System.out.println(action);
+
+                    if (displayPanelEvent != null){
+                        displayPanelListener.displayPanelEventOccurred(displayPanelEvent);
+
+                    }
+                }
+
+            });
         }
     }
 
@@ -59,7 +78,7 @@ public class NumberPadPanel extends JPanel {
         return numberPadButton;
     }
 
-    public void activateInactiveButtons() {
+    public void activateNumPadButtons() {
         for (JButton button : numPadButtons) {
             if (!button.isEnabled()) {
                 button.setEnabled(true);
@@ -81,5 +100,9 @@ public class NumberPadPanel extends JPanel {
                 button.setEnabled(false);
             }
         }
+    }
+
+    public void setDisplayPanelListener(DisplayPanelListener displayPanelListener) {
+        this.displayPanelListener = displayPanelListener;
     }
 }

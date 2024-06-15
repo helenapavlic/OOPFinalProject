@@ -28,6 +28,15 @@ public class MainFrame extends JFrame {
             }
         });
 
+        displayPanel.setDisplayPanelListener(new DisplayPanelListener() {
+            @Override
+            public void displayPanelEventOccurred(DisplayPanelEvent displayPanelEvent) {
+
+
+
+            }
+        });
+
 
     }
 
