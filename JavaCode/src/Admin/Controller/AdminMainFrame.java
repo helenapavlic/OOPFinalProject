@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AdminMainFrame extends JFrame {
-    private ViewPanel adminViewPanel;
+    ViewPanel adminViewPanel;
     private FilterPanel adminFilterPanel;
     private AdminMenuBar adminMenuBar;
 
@@ -27,8 +27,8 @@ public class AdminMainFrame extends JFrame {
     private void layoutComponents() {
         setLayout(new BorderLayout(5, 5));
         add(adminMenuBar, BorderLayout.NORTH);
-        add(adminViewPanel, BorderLayout.EAST);
-        add(adminFilterPanel, BorderLayout.WEST);
+        add(adminViewPanel, BorderLayout.CENTER);
+        add(adminFilterPanel, BorderLayout.SOUTH);
     }
 
     private void initComponents() {
