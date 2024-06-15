@@ -51,10 +51,12 @@ public class DisplayPanel extends JPanel {
     public void reset() {
         textPanel.reset();
         numberPadPanel.reset();
+        toolBarPanel.deactivateCancel();
     }
 
     public void activateInactiveButtons(){
         numberPadPanel.activateNumPadButtons();
+        toolBarPanel.activateCancel();
 
     }
 

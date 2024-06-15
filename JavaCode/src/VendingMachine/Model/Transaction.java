@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class Transaction implements Serializable {
@@ -15,8 +14,7 @@ public class Transaction implements Serializable {
     private static final String OUT_OF_STOCK_TRANSACTION = "stockError";
     private static final String ITEM_NOT_FOUND_TRANSACTION = "itemError";
     private static final String NOT_ENOUGH_TOTAL_MONEY_TRANSACTION = "moneyError";
-    private static List<Transaction> transactions = new ArrayList<>();
-    private static int cntId = 1;
+    private static ArrayList<Transaction> transactions = AUX_CLS.loadTransactions(filePath);
     private int transactionId;
     private String transactionStatus;
     private String dateAndTime;
@@ -31,7 +29,7 @@ public class Transaction implements Serializable {
     private int itemQuantity;
 
     public Transaction(int userIdInput, float userMoneyInput) {
-        this.transactionId = cntId++;
+        this.transactionId = AUX_CLS.getNextTransactionId(filePath);
         this.dateAndTime = generateDateAndTime();
         item = Item.getItemById(userIdInput);
         this.inputMoney = userMoneyInput;
@@ -45,13 +43,13 @@ public class Transaction implements Serializable {
             this.itemQuantity = 0;
             this.remainingQuantity = 0;
             this.change = calculateChange();
-        } else{
+        } else {
             this.itemId = item.getId();
             this.itemName = item.getItemName();
             this.itemPrice = item.getPrice();
             this.itemQuantity = item.getQuantity();
 
-            if (!item.isAvailable()){
+            if (!item.isAvailable()) {
                 this.transactionStatus = OUT_OF_STOCK_TRANSACTION;
                 this.isSuccessful = false;
                 this.change = inputMoney;
@@ -66,17 +64,14 @@ public class Transaction implements Serializable {
                 item.setQuantity(remainingQuantity);
                 this.change = calculateChange();
             }
-
         }
 
         transactions.add(this);
-        printTransactions();
-
+        AUX_CLS.saveTransactions(transactions, filePath);
     }
 
-    public Transaction(float inputMoney){
-//        cancelled transaction
-        this.transactionId = cntId++;
+    public Transaction(float inputMoney) {
+        this.transactionId = AUX_CLS.getNextTransactionId(filePath);
         this.dateAndTime = generateDateAndTime();
         this.inputMoney = inputMoney;
         this.isSuccessful = false;
@@ -90,32 +85,9 @@ public class Transaction implements Serializable {
         this.change = inputMoney;
 
         transactions.add(this);
-        printTransactions();
-
+        AUX_CLS.saveTransactions(transactions, filePath);
     }
 
-
-    private static void printTransactions() {
-        System.out.println("--------------------------");
-        for (Transaction transaction : transactions) {
-            System.out.println(transaction);
-        }
-        System.out.println();
-    }
-
-    public static List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    private int generateNextTransactionId() {
-        int nextId = 1;
-        if (AUX_CLS.fileExists(filePath)) {
-            Transaction lastTransaction = AUX_CLS.readObjectFromFile(filePath);
-            int lastTransactionId = lastTransaction.getTransactionId();
-            nextId = lastTransactionId;
-        }
-        return nextId;
-    }
 
     private String generateDateAndTime() {
         LocalDateTime now = LocalDateTime.now();
@@ -130,23 +102,12 @@ public class Transaction implements Serializable {
         } else {
             change = 0.0f;
         }
+        change = Math.round(change * 100.0f) / 100.0f;
         return change;
     }
 
     public int getTransactionId() {
         return transactionId;
-    }
-
-    public String getDateAndTime() {
-        return dateAndTime;
-    }
-
-    public boolean isSuccessful() {
-        return isSuccessful;
-    }
-
-    public float getInputMoney() {
-        return inputMoney;
     }
 
     public float getChange() {
@@ -157,30 +118,9 @@ public class Transaction implements Serializable {
         return item;
     }
 
-    public int getRemainingQuantity() {
-        return remainingQuantity;
-    }
-
-    public int getItemId() {
-        return itemId;
-    }
-
-    public float getItemPrice() {
-        return itemPrice;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public int getItemQuantity() {
-        return itemQuantity;
-    }
-
     public String getTransactionStatus() {
         return transactionStatus;
     }
-
 
 
     @Override

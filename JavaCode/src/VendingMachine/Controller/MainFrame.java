@@ -32,10 +32,6 @@ public class MainFrame extends JFrame {
             @Override
             public void displayPanelEventOccurred(DisplayPanelEvent displayPanelEvent) {
                 String action = displayPanelEvent.getAction();
-
-//                todo: provjeriti postoji li bin file i po tome postaviti transaction cnt
-//                todo: ako postoji bin file porčitati id spremljenog objekta
-//                todo: metoda za spremanje objekta transakcije!!!
                 if (action.equalsIgnoreCase("ok")) {
                     int itemId = displayPanel.getItemId();
                     float moneyInput = displayPanel.getInputMoney();
@@ -59,6 +55,7 @@ public class MainFrame extends JFrame {
                     } else {
                         JOptionPane.showMessageDialog(MainFrame.this, "Unknown action!", "Error", JOptionPane.ERROR_MESSAGE);
                     }
+
                 } else if (action.equalsIgnoreCase("del")) {
                     displayPanel.deleteLastNumIdInput();
                 } else if (action.equalsIgnoreCase("cancel")) {
@@ -66,9 +63,7 @@ public class MainFrame extends JFrame {
                     Transaction transaction = new Transaction(inputMoney);
                     float change = transaction.getChange();
                     String formattedChange = String.format("%.2f", change);
-
                     JOptionPane.showMessageDialog(MainFrame.this, "Cancelled transaction! \nChange: " + formattedChange + "€", "Cancel transaction", JOptionPane.ERROR_MESSAGE);
-
                     displayPanel.reset();
                     coinsPanel.resetCoinsCounter();
                 } else if (action.equalsIgnoreCase("admin")) {

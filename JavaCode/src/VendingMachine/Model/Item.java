@@ -1,8 +1,9 @@
 package VendingMachine.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Item {
+public class Item implements Serializable {
     private static int cntId = 1;
     private final int INITIAL_QUANTITY = 2;
     private String itemName;
