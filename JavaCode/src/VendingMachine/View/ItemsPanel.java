@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class ItemsPanel extends JPanel {
-//    todo: ISPIS CIJENE -> NAPRAVITI DA JE ODVOJEN TOČKOM I DA JE ZAOKRUŽEN NA 2 DECIMALE
     private static List<JPanel> itemsPanels;
     private final int NUM_PLACES = 12;
     JLabel productIdLabel;
@@ -88,8 +87,6 @@ public class ItemsPanel extends JPanel {
         setBorder(BorderFactory.createCompoundBorder(outer, inner));
     }
 
-
-    //    todo: check this method
     public void updatePanel(Item item) {
         this.item = item;
         for (JPanel itemPanel : itemsPanels) {

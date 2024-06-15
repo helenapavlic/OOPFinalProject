@@ -8,7 +8,7 @@ public class AdminMainFrame extends JFrame {
     private FilterPanel adminFilterPanel;
     private AdminMenuBar adminMenuBar;
 
-    public AdminMainFrame(){
+    public AdminMainFrame() {
         super("Admin");
         initComponents();
         layoutComponents();
@@ -21,10 +21,10 @@ public class AdminMainFrame extends JFrame {
     }
 
     private void layoutComponents() {
-        setLayout(new BorderLayout(5,5));
-        add(adminMenuBar,BorderLayout.NORTH);
-        add(adminViewPanel,BorderLayout.EAST);
-        add(adminFilterPanel,BorderLayout.WEST);
+        setLayout(new BorderLayout(5, 5));
+        add(adminMenuBar, BorderLayout.NORTH);
+        add(adminViewPanel, BorderLayout.EAST);
+        add(adminFilterPanel, BorderLayout.WEST);
     }
 
     private void initComponents() {

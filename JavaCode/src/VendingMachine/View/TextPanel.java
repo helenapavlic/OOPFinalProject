@@ -20,6 +20,22 @@ public class TextPanel extends JPanel {
         layoutComponents();
     }
 
+    public static float parseCurrency(String input) {
+        if (input.equalsIgnoreCase("")) {
+            input = "0.00 €";
+        }
+        input = input.replace("€", "").trim();
+        NumberFormat format = NumberFormat.getInstance(Locale.GERMANY);
+        try {
+            Number number = format.parse(input);
+            System.out.println(number);
+            return number.floatValue();
+        } catch (ParseException e) {
+            System.err.println("Greška prilikom parsiranja valute: " + e.getMessage());
+            return 0.0f;
+        }
+    }
+
     private void layoutComponents() {
         setLayout(new GridLayout(4, 1, 4, 4));
         add(selectedItemLabel);
@@ -49,7 +65,8 @@ public class TextPanel extends JPanel {
         totalTextArea.selectAll();
         totalTextArea.replaceSelection(value + " €");
     }
-    public void showItemIDInput(String text){
+
+    public void showItemIDInput(String text) {
         selectedItemTextArea.append(text);
     }
 
@@ -60,10 +77,11 @@ public class TextPanel extends JPanel {
         selectedItemTextArea.replaceSelection(null);
     }
 
-    public void setSelectedItemId(String text){
+    public void setSelectedItemId(String text) {
         selectedItemTextArea.append(text);
     }
-    public int deleteLastNumberIdInput(){
+
+    public int deleteLastNumberIdInput() {
         String modifiedString = selectedItemTextArea.getText().substring(0, selectedItemTextArea.getText().length() - 1);
         selectedItemTextArea.selectAll();
         selectedItemTextArea.replaceSelection(modifiedString);
@@ -74,28 +92,12 @@ public class TextPanel extends JPanel {
         return Integer.parseInt(selectedItemTextArea.getText());
     }
 
-    public float readTotalMoneyInputTextField(){
+    public float readTotalMoneyInputTextField() {
         String text = totalTextArea.getText();
         float num = 0.0f;
-        if (text!=null){
+        if (text != null) {
             num = parseCurrency(text);
         }
         return num;
-    }
-
-    public static float parseCurrency(String input) {
-        if (input.equalsIgnoreCase("")){
-            input = "0.00 €";
-        }
-        input = input.replace("€", "").trim();
-        NumberFormat format = NumberFormat.getInstance(Locale.GERMANY);
-        try {
-            Number number = format.parse(input);
-            System.out.println(number);
-            return number.floatValue();
-        } catch (ParseException e) {
-            System.err.println("Greška prilikom parsiranja valute: " + e.getMessage());
-            return 0.0f;
-        }
     }
 }

@@ -3,9 +3,9 @@ package VendingMachine.Model;
 import java.util.EventObject;
 
 public class CoinsPanelEvent extends EventObject {
+    private static float totalInputValue = 0;
     private String coinButtonPressed;
     private float valueOfCoin;
-    private static float totalInputValue = 0;
 
     /**
      * Constructs a prototypical Event.
@@ -17,7 +17,7 @@ public class CoinsPanelEvent extends EventObject {
         super(source);
         this.valueOfCoin = valueOfCoin;
         this.coinButtonPressed = coinButtonPressed;
-        totalInputValue+= valueOfCoin;
+        totalInputValue += valueOfCoin;
     }
 
     public String getCoinButtonPressed() {

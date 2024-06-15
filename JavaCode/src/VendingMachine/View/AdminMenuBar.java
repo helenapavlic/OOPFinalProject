@@ -6,20 +6,16 @@ import java.awt.event.ActionListener;
 
 
 public class AdminMenuBar extends JMenuBar implements ActionListener {
-
     private JMenu fileMenu;
     private JMenu editMenu;
-
     private JMenuItem exportDataItem;
     private JMenuItem importDataItem;
     private JMenuItem exitItem;
-
     private JMenuItem clearTextItem;
     private AdminMenuBarListener adminMenuBarListener;
 
 
-    public AdminMenuBar(){
-
+    public AdminMenuBar() {
         initMenuBar();
         activateMenuBar();
     }
@@ -63,30 +59,27 @@ public class AdminMenuBar extends JMenuBar implements ActionListener {
         add(editMenu);
         // accelerator for clear text
         clearTextItem.setAccelerator(KeyStroke.getKeyStroke("control T"));
-
     }
 
     @Override
-    public void actionPerformed(ActionEvent aev){
-
-        if(aev.getSource() == exportDataItem){
-            if(adminMenuBarListener != null){
+    public void actionPerformed(ActionEvent aev) {
+        if (aev.getSource() == exportDataItem) {
+            if (adminMenuBarListener != null) {
                 adminMenuBarListener.menuBarEventOccurred("Export Data");
             }
-        } else if(aev.getSource() == importDataItem){
-            if(adminMenuBarListener != null){
+        } else if (aev.getSource() == importDataItem) {
+            if (adminMenuBarListener != null) {
                 adminMenuBarListener.menuBarEventOccurred("Import Data");
             }
-        } else if(aev.getSource() == exitItem){
-            if(adminMenuBarListener != null){
+        } else if (aev.getSource() == exitItem) {
+            if (adminMenuBarListener != null) {
                 adminMenuBarListener.menuBarEventOccurred("Exit");
             }
-        } else if(aev.getSource() == clearTextItem){
-            if(adminMenuBarListener != null){
+        } else if (aev.getSource() == clearTextItem) {
+            if (adminMenuBarListener != null) {
                 adminMenuBarListener.menuBarEventOccurred("Clear Text");
             }
         }
-
     }
 
     public void setMenuBarListener(AdminMenuBarListener listener) {

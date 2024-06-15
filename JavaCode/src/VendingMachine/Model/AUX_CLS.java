@@ -53,7 +53,7 @@ public class AUX_CLS {
         }
     }
 
-    public <T> void printListItems(ArrayList<T> list) {
+    public static <T> void printListItems(ArrayList<T> list) {
         for (T listItem : list) {
             System.out.println(listItem);
         }

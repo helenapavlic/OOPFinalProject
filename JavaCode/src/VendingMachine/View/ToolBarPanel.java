@@ -28,15 +28,10 @@ public class ToolBarPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String action = adminButton.getActionCommand();
                 DisplayPanelEvent displayPanelEvent = new DisplayPanelEvent(this, action);
-
-                System.out.println(action);
-
                 if (displayPanelEvent != null) {
                     displayPanelListener.displayPanelEventOccurred(displayPanelEvent);
 
                 }
-
-
             }
         });
 
@@ -45,16 +40,12 @@ public class ToolBarPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String action = cancelButton.getActionCommand();
                 DisplayPanelEvent displayPanelEvent = new DisplayPanelEvent(this, action);
-
-                System.out.println(action);
-
                 if (displayPanelEvent != null) {
                     displayPanelListener.displayPanelEventOccurred(displayPanelEvent);
 
                 }
             }
         });
-
     }
 
     private void layoutComponents() {

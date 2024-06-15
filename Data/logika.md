@@ -45,6 +45,25 @@ pritiskom na gumb se u display panelu u text panelu zbrojena vrijednost dosad pr
 
 
 
+---
+
+## ADMIN PANEL
+
+1. View panel -> svaku stavku iz datoteke transakcije prikazuje u jTabelu
+2. filterPanel -> ima diltere za filtriranje transakcija -> gumb filtriraj primjenjuje filtere te u view panelu prikazuje transakcije koje odgovaraju filterima
+   3. status transakcije - uspješna, otkazana, neuspješna zbog novca, nepoznat id, sve transakcije.. dropdown
+   4. datum i vrijeme -> dva polja u kojima se može birati datum i vrijeme, traži se između tih vrijednosti
+   5. ulazno ili silazno prikazivanje
+   5. id trasanckije?
+   6. item 
+   7. je li imalo ostatka?
+   8. remaining quantity of item
+3. menuBar -> spremi datoteku sprema u csv, otvori datoteku -> otvara csv... očisti prikaz -> briše sve sa view panela 
+   4. za svaki od ovih gumba se otvara JFileChooser
+   5. 
+   
+
+
 
 
 

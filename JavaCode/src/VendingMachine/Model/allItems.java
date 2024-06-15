@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum allItems {
-//    PRODUCT16("item",1.4F),
+    //    PRODUCT16("item",1.4F),
     PRODUCT1("Chips", 1.50F),
     PRODUCT2("Chocolate Bar", 2.00F),
     PRODUCT3("Cookies", 1.75F),
@@ -27,15 +27,15 @@ public enum allItems {
         this.price = price;
     }
 
+    public static List<allItems> getAllItems() {
+        return Arrays.asList(allItems.values());
+    }
+
     public String getItemName() {
         return itemName;
     }
 
     public double getPrice() {
         return price;
-    }
-
-    public static List<allItems> getAllItems() {
-        return Arrays.asList(allItems.values());
     }
 }

@@ -7,7 +7,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class DisplayPanel extends JPanel {
-    //    todo: ISPIS INPUTA -> TEXT PANEL -> NAPRAVITI DA JE ODVOJEN TOČKOM I DA JE ZAOKRUŽEN NA 2 DECIMALE
     private NumberPadPanel numberPadPanel;
     private TextPanel textPanel;
     private ToolBarPanel toolBarPanel;
@@ -45,7 +44,7 @@ public class DisplayPanel extends JPanel {
         textPanel.showAddedMoney(formattedValue);
     }
 
-    public void printId(String num){
+    public void printId(String num) {
         textPanel.setSelectedItemId(num);
     }
 
@@ -55,7 +54,7 @@ public class DisplayPanel extends JPanel {
         toolBarPanel.deactivateCancel();
     }
 
-    public void activateInactiveButtons(){
+    public void activateInactiveButtons() {
         numberPadPanel.activateNumPadButtons();
         toolBarPanel.activateCancel();
 
@@ -65,13 +64,13 @@ public class DisplayPanel extends JPanel {
         return textPanel.readTotalMoneyInputTextField();
     }
 
-    public int getItemId(){
+    public int getItemId() {
         return textPanel.readItemIdTextFiled();
     }
 
-    public void deleteLastNumIdInput(){
+    public void deleteLastNumIdInput() {
         int lenOfNewText = textPanel.deleteLastNumberIdInput();
-        if (lenOfNewText<1){
+        if (lenOfNewText < 1) {
             numberPadPanel.reset();
         }
     }

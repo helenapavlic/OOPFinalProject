@@ -38,12 +38,11 @@ public class NumberPadPanel extends JPanel {
                     DisplayPanelEvent displayPanelEvent = new DisplayPanelEvent(this, action);
                     System.out.println(action);
 
-                    if (displayPanelEvent != null){
+                    if (displayPanelEvent != null) {
                         displayPanelListener.displayPanelEventOccurred(displayPanelEvent);
 
                     }
                 }
-
             });
         }
     }

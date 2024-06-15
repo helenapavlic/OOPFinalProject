@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-
 public class Transaction implements Serializable {
 
     private static final String filePath = "Data/transctions.bin";
@@ -65,7 +64,6 @@ public class Transaction implements Serializable {
                 this.change = calculateChange();
             }
         }
-
         transactions.add(this);
         AUX_CLS.printListItems(transactions);
         AUX_CLS.saveTransactions(transactions, filePath);
