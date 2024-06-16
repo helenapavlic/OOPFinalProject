@@ -11,11 +11,12 @@ public class AdminMenuBar extends JMenuBar implements ActionListener {
     private JMenu fileMenu;
     private JMenu editMenu;
     private JMenuItem exportDataItem;
-    private JMenuItem importDataItem;
+    private JMenuItem importAllDataItems;
     private JMenuItem exitItem;
     private JMenuItem clearTableItem;
-    private JMenuItem clearFormItem;
+    private JMenuItem clearFilterItems;
     private AdminMenuBarListener adminMenuBarListener;
+    private JMenuItem importSelectedDataItems;
 
 
     public AdminMenuBar() {
@@ -25,14 +26,18 @@ public class AdminMenuBar extends JMenuBar implements ActionListener {
 
     private void activateMenuBar() {
         exportDataItem.addActionListener(this);
-        importDataItem.addActionListener(this);
+        importAllDataItems.addActionListener(this);
+        importSelectedDataItems.addActionListener(this);
         exitItem.addActionListener(this);
         clearTableItem.addActionListener(this);
+        clearFilterItems.addActionListener(this);
         // set ActionCommands
-        exportDataItem.setActionCommand("Export Data");
-        importDataItem.setActionCommand("Import Data");
-        exitItem.setActionCommand("Exit");
-        clearTableItem.setActionCommand("Clear Text");
+        exportDataItem.setActionCommand("EXPORT");
+        importAllDataItems.setActionCommand("IMPORT_ALL");
+        importSelectedDataItems.setActionCommand("IMPORT_SELECTED");
+        exitItem.setActionCommand("EXIT");
+        clearTableItem.setActionCommand("CLEAR_TABLE");
+        clearFilterItems.setActionCommand("CLEAR_FILTER");
     }
 
     private void initMenuBar() {
@@ -41,10 +46,12 @@ public class AdminMenuBar extends JMenuBar implements ActionListener {
         editMenu = new JMenu("Edit");
 
         exportDataItem = new JMenuItem("Export Data");
-        importDataItem = new JMenuItem("Import Data");
+        importSelectedDataItems = new JMenuItem("Import Data");
+        importAllDataItems = new JMenuItem("Import All Data");
         exitItem = new JMenuItem("Exit");
         fileMenu.add(exportDataItem);
-        fileMenu.add(importDataItem);
+        fileMenu.add(importAllDataItems);
+        fileMenu.add(importSelectedDataItems);
         fileMenu.addSeparator();
         fileMenu.add(exitItem);
         add(fileMenu);
@@ -54,37 +61,45 @@ public class AdminMenuBar extends JMenuBar implements ActionListener {
         editMenu.setMnemonic('E');
         // set accelerators
         exportDataItem.setAccelerator(KeyStroke.getKeyStroke("control E"));
-        importDataItem.setAccelerator(KeyStroke.getKeyStroke("control I"));
+        importAllDataItems.setAccelerator(KeyStroke.getKeyStroke("control A"));
+        importSelectedDataItems.setAccelerator(KeyStroke.getKeyStroke("control I"));
         exitItem.setAccelerator(KeyStroke.getKeyStroke("control X"));
 
         clearTableItem = new JMenuItem("Clear Table");
-        clearFormItem = new JMenuItem("Clear Form");
-        editMenu.add(clearFormItem);
+        clearFilterItems = new JMenuItem("Clear Filters");
+        editMenu.add(clearFilterItems);
         editMenu.add(clearTableItem);
         add(editMenu);
 
         clearTableItem.setAccelerator(KeyStroke.getKeyStroke("control T"));
-        clearFormItem.setAccelerator(KeyStroke.getKeyStroke("control F"));
-
+        clearFilterItems.setAccelerator(KeyStroke.getKeyStroke("control F"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent aev) {
-        if (aev.getSource() == exportDataItem) {
+    public void actionPerformed(ActionEvent actionEvent) {
+        if (actionEvent.getSource() == exportDataItem) {
             if (adminMenuBarListener != null) {
-                adminMenuBarListener.menuBarEventOccurred("Export Data");
+                adminMenuBarListener.menuBarEventOccurred(actionEvent.getActionCommand());
             }
-        } else if (aev.getSource() == importDataItem) {
+        } else if (actionEvent.getSource() == importAllDataItems) {
             if (adminMenuBarListener != null) {
-                adminMenuBarListener.menuBarEventOccurred("Import Data");
+                adminMenuBarListener.menuBarEventOccurred(actionEvent.getActionCommand());
             }
-        } else if (aev.getSource() == exitItem) {
-            if (adminMenuBarListener != null) {
-                adminMenuBarListener.menuBarEventOccurred("Exit");
+        } else if(actionEvent.getSource() == importSelectedDataItems){
+            if (adminMenuBarListener != null){
+                adminMenuBarListener.menuBarEventOccurred(actionEvent.getActionCommand());
             }
-        } else if (aev.getSource() == clearTableItem) {
+        }else if (actionEvent.getSource() == exitItem) {
             if (adminMenuBarListener != null) {
-                adminMenuBarListener.menuBarEventOccurred("Clear Text");
+                adminMenuBarListener.menuBarEventOccurred(actionEvent.getActionCommand());
+            }
+        } else if (actionEvent.getSource() == clearTableItem) {
+            if (adminMenuBarListener != null) {
+                adminMenuBarListener.menuBarEventOccurred(actionEvent.getActionCommand());
+            }
+        } else if (actionEvent.getSource() == clearFilterItems) {
+            if (adminMenuBarListener != null) {
+                adminMenuBarListener.menuBarEventOccurred(actionEvent.getActionCommand());
             }
         }
     }

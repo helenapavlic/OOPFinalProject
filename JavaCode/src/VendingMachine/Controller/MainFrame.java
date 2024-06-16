@@ -17,9 +17,15 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         super("Vending machine");
+        setLogo();
         initComps();
         layoutComps();
         activateFrame();
+    }
+
+    private void setLogo() {
+        ImageIcon imageIcon = new ImageIcon("Images/vending-logo-img.jpg");
+        setIconImage(imageIcon.getImage());
     }
 
     private void activateFrame() {

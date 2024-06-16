@@ -7,13 +7,14 @@ import java.util.ArrayList;
 
 public class Transaction implements Serializable {
 
-    private static final String filePath = "Data/transctions.bin";
+    private static final String filePathForBinDat = "Data/transctions.bin";
+    private static final String filePathForCsvDat = "Data/transctions.csv";
     private static final String SUCCESSFUL_TRANSACTION = "success";
     private static final String CANCELLED_TRANSACTION = "cancelled";
     private static final String OUT_OF_STOCK_TRANSACTION = "stockError";
     private static final String ITEM_NOT_FOUND_TRANSACTION = "itemError";
     private static final String NOT_ENOUGH_TOTAL_MONEY_TRANSACTION = "moneyError";
-    private static ArrayList<Transaction> transactions = AUX_CLS.loadTransactions(filePath);
+    private static ArrayList<Transaction> transactions = AUX_CLS.loadTransactions(filePathForBinDat);
     private int transactionId;
     private String transactionStatus;
     private String dateAndTime;
@@ -28,7 +29,7 @@ public class Transaction implements Serializable {
     private int itemQuantity;
 
     public Transaction(int userIdInput, float userMoneyInput) {
-        this.transactionId = AUX_CLS.getNextTransactionId(filePath);
+        this.transactionId = AUX_CLS.getNextTransactionId(filePathForBinDat);
         this.dateAndTime = generateDateAndTime();
         item = Item.getItemById(userIdInput);
         this.inputMoney = userMoneyInput;
@@ -66,11 +67,12 @@ public class Transaction implements Serializable {
         }
         transactions.add(this);
         AUX_CLS.printListItems(transactions);
-        AUX_CLS.saveTransactions(transactions, filePath);
+        AUX_CLS.saveTransactions(transactions, filePathForBinDat);
+        AUX_CLS.saveTransactionsToCSV(transactions,filePathForCsvDat);
     }
 
     public Transaction(float inputMoney) {
-        this.transactionId = AUX_CLS.getNextTransactionId(filePath);
+        this.transactionId = AUX_CLS.getNextTransactionId(filePathForBinDat);
         this.dateAndTime = generateDateAndTime();
         this.inputMoney = inputMoney;
         this.isSuccessful = false;
@@ -84,7 +86,20 @@ public class Transaction implements Serializable {
         this.change = inputMoney;
 
         transactions.add(this);
-        AUX_CLS.saveTransactions(transactions, filePath);
+        AUX_CLS.saveTransactions(transactions, filePathForBinDat);
+        AUX_CLS.saveTransactionsToCSV(transactions,filePathForCsvDat);
+    }
+
+    public Transaction(int transactionId,String dateAndTime, String transactionStatus, float inputMoney, float change, int itemId, String itemName, float itemPrice, int remainingQuantity){
+        this.transactionId=transactionId;
+        this.dateAndTime=dateAndTime;
+        this.transactionStatus = transactionStatus;
+        this.inputMoney = inputMoney;
+        this.change = change;
+        this.itemId=itemId;
+        this.itemName = itemName;
+        this.itemPrice = itemPrice;
+        this.remainingQuantity = remainingQuantity;
     }
 
 
@@ -105,8 +120,28 @@ public class Transaction implements Serializable {
         return change;
     }
 
+    public static ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
     public int getTransactionId() {
         return transactionId;
+    }
+
+    public String getTransactionStatus() {
+        return transactionStatus;
+    }
+
+    public String getDateAndTime() {
+        return dateAndTime;
+    }
+
+    public boolean isSuccessful() {
+        return isSuccessful;
+    }
+
+    public float getInputMoney() {
+        return inputMoney;
     }
 
     public float getChange() {
@@ -117,10 +152,25 @@ public class Transaction implements Serializable {
         return item;
     }
 
-    public String getTransactionStatus() {
-        return transactionStatus;
+    public int getRemainingQuantity() {
+        return remainingQuantity;
     }
 
+    public int getItemId() {
+        return itemId;
+    }
+
+    public float getItemPrice() {
+        return itemPrice;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public int getItemQuantity() {
+        return itemQuantity;
+    }
 
     @Override
     public String toString() {

@@ -1,7 +1,11 @@
 package VendingMachine.Model;
 
 import java.io.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class AUX_CLS {
 
@@ -9,7 +13,6 @@ public class AUX_CLS {
         File file = new File(filePath);
         return file.exists();
     }
-
 
     public static void saveTransactions(ArrayList<Transaction> transactions, String filePath) {
         try (FileOutputStream fileOut = new FileOutputStream(filePath);
@@ -59,5 +62,57 @@ public class AUX_CLS {
         }
     }
 
+    public static void saveTransactionsToCSV(ArrayList<Transaction> transactions, String filePath) {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat decimalFormat = new DecimalFormat("0.00", symbols);
+//        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        try (FileWriter writer = new FileWriter(filePath)) {
+            // Write the CSV header
+            writer.append("ID,DATE AND TIME,STATUS,INPUT MONEY,CHANGE,ITEM ID,ITEM NAME,ITEM PRICE,QUANTITY\n");
 
+            // Write transaction data
+            for (Transaction transaction : transactions) {
+                writer.append(String.valueOf(transaction.getTransactionId())).append(",");
+                writer.append(transaction.getDateAndTime()).append(",");
+                writer.append(transaction.getTransactionStatus()).append(",");
+                writer.append(decimalFormat.format(transaction.getInputMoney())).append(",");
+                writer.append(decimalFormat.format(transaction.getChange())).append(",");
+                writer.append(String.valueOf(transaction.getItemId())).append(",");
+                writer.append(transaction.getItemName()).append(",");
+                writer.append(decimalFormat.format(transaction.getItemPrice())).append(",");
+                writer.append(String.valueOf(transaction.getRemainingQuantity())).append("\n");
+            }
+
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<String[]> readTransactionsFromCSV(String filePath) {
+        List<String[]> records = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            boolean isFirstLine = true;
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+                String[] values = line.split(",");
+                records.add(values);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return records;
+    }
+
+    public static void exportDataToCSV(String filePath){
+
+
+    }
 }
+
+
+

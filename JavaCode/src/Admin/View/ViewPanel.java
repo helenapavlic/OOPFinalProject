@@ -1,12 +1,18 @@
 package Admin.View;
 
+import VendingMachine.Model.AUX_CLS;
+import VendingMachine.Model.Transaction;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewPanel extends JPanel {
     private JTable table;
+    private DefaultTableModel model;
 
     public ViewPanel() {
         InitComponents();
@@ -35,11 +41,11 @@ public class ViewPanel extends JPanel {
     }
 
     private void InitComponents() {
-        String[] columnNames = {"ID", "DATE AND TIME","STATUS", "INPUT MONEY", "CHANGE", "ITEM ID", "ITEM NAME","ITEM PRICE", "QUANTITY"};
+        String[] columnNames = {"ID", "DATE AND TIME", "STATUS", "INPUT MONEY", "CHANGE", "ITEM ID", "ITEM NAME", "ITEM PRICE", "QUANTITY"};
 
         int initialRowCount = 0;
         Object[][] data = new Object[initialRowCount][columnNames.length];
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        model = new DefaultTableModel(data, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -62,7 +68,7 @@ public class ViewPanel extends JPanel {
 
     private void setColumnWidths() {
 //        int totalWidth = 850;
-        int[] columnWidths = {50, 150, 100, 100, 100, 50, 150, 100, 69}; // Postavi širinu svakog stupca
+        int[] columnWidths = {50, 150, 100, 100, 90, 50, 140, 100, 65}; // Postavi širinu svakog stupca
 
         TableColumnModel columnModel = table.getColumnModel();
         for (int i = 0; i < columnWidths.length; i++) {
@@ -92,6 +98,36 @@ public class ViewPanel extends JPanel {
         cellRenderer.setBackground(backgroundColor);
         cellRenderer.setForeground(textColor);
         table.setDefaultRenderer(Object.class, cellRenderer);
+    }
+
+    public void loadDataFromCSV(String filePath) {
+        List<String[]> records = AUX_CLS.readTransactionsFromCSV(filePath);
+        for (String[] record : records) {
+            model.addRow(record);
+        }
+    }
+
+    public void clearData() {
+        model.setRowCount(0);
+    }
+
+    public List<Transaction> getTransactionsFromTable() {
+        List<Transaction> transactions = new ArrayList<>();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            int transactionId = Integer.parseInt(model.getValueAt(i, 0).toString());
+            String dateAndTime = model.getValueAt(i, 1).toString();
+            String transactionStatus = model.getValueAt(i, 2).toString();
+            float inputMoney = Float.parseFloat(model.getValueAt(i, 3).toString());
+            float change = Float.parseFloat(model.getValueAt(i, 4).toString());
+            int itemId = Integer.parseInt(model.getValueAt(i, 5).toString());
+            String itemName = model.getValueAt(i, 6).toString();
+            float itemPrice = Float.parseFloat(model.getValueAt(i, 7).toString());
+            int remainingQuantity = Integer.parseInt(model.getValueAt(i, 8).toString());
+
+            Transaction transaction = new Transaction(transactionId, dateAndTime, transactionStatus, inputMoney, change, itemId, itemName, itemPrice, remainingQuantity);
+            transactions.add(transaction);
+        }
+        return transactions;
     }
 }
 
