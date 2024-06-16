@@ -93,11 +93,6 @@ public class TransactionFilterPanel extends JPanel {
                 }
             }
 
-            if (dateFrom.getModel().getValue() == null && dateTo.getModel().getValue() != null) {
-                JOptionPane.showMessageDialog(this, "If 'Date to' is set, 'Date from' must also be set.", "Invalid Date Range", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-
             if (dateFrom.getModel().getValue() != null && dateTo.getModel().getValue() != null) {
                 String fromDateStr = dateFrom.getJFormattedTextField().getText();
                 String toDateStr = dateTo.getJFormattedTextField().getText();
@@ -190,7 +185,6 @@ public class TransactionFilterPanel extends JPanel {
     private void InitComponents() {
         setPreferredSize(new Dimension(440, getHeight()));
 
-        // Kreiranje modela za JDatePicker
         UtilDateModel modelFrom = new UtilDateModel();
         UtilDateModel modelTo = new UtilDateModel();
         Properties p = new Properties();
@@ -198,15 +192,12 @@ public class TransactionFilterPanel extends JPanel {
         p.put("text.month", "Month");
         p.put("text.year", "Year");
 
-        // Kreiranje JDatePanel za dateFrom i dateTo
         JDatePanelImpl datePanelFromDate = new JDatePanelImpl(modelFrom, p);
         JDatePanelImpl datePanelToDate = new JDatePanelImpl(modelTo, p);
 
-        // Kreiranje JDatePicker instance za dateFrom i dateTo
         dateFrom = new JDatePickerImpl(datePanelFromDate, new DateLabelFormatter());
         dateTo = new JDatePickerImpl(datePanelToDate, new DateLabelFormatter());
 
-        // Inicijalizacija ostalih komponenti
         transactionStatus = new JComboBox<>();
         DefaultComboBoxModel<String> transactionModel = new DefaultComboBoxModel<>();
         transactionModel.addElement("Successful transaction");
@@ -226,19 +217,12 @@ public class TransactionFilterPanel extends JPanel {
     }
 
     public void reset() {
-        // Resetiranje datuma
         dateFrom.getModel().setValue(null);
         dateFrom.getJFormattedTextField().setText("");
         dateTo.getModel().setValue(null);
         dateTo.getJFormattedTextField().setText("");
-
-        // Resetiranje statusa transakcije
         transactionStatus.setSelectedIndex(-1);
-
-        // Resetiranje transaction ID
         transactionId.setText("");
-
-        // Resetiranje gumba apply
         apply.setEnabled(false);
     }
 

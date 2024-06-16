@@ -33,6 +33,7 @@ public class MainFrame extends JFrame {
             @Override
             public void coinsPanelEventOccurred(CoinsPanelEvent coinsPanelEvent) {
                 displayPanel.printAddedMoney(coinsPanelEvent.getTotalInputValue());
+                displayPanel.activateCancelTransaction();
             }
         });
 

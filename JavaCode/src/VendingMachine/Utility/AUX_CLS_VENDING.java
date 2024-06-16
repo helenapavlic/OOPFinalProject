@@ -1,4 +1,6 @@
-package VendingMachine.Model;
+package VendingMachine.Utility;
+
+import VendingMachine.Model.Transaction;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -7,12 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class AUX_CLS {
-
-    public static boolean fileExists(String filePath) {
-        File file = new File(filePath);
-        return file.exists();
-    }
+public class AUX_CLS_VENDING {
 
     public static void saveTransactions(ArrayList<Transaction> transactions, String filePath) {
         try (FileOutputStream fileOut = new FileOutputStream(filePath);
@@ -107,12 +104,4 @@ public class AUX_CLS {
         }
         return records;
     }
-
-    public static void exportDataToCSV(String filePath){
-
-
-    }
 }
-
-
-

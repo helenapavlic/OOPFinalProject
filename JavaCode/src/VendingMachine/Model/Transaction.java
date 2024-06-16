@@ -1,5 +1,7 @@
 package VendingMachine.Model;
 
+import VendingMachine.Utility.AUX_CLS_VENDING;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,7 +16,7 @@ public class Transaction implements Serializable {
     private static final String OUT_OF_STOCK_TRANSACTION = "stockError";
     private static final String ITEM_NOT_FOUND_TRANSACTION = "itemError";
     private static final String NOT_ENOUGH_TOTAL_MONEY_TRANSACTION = "moneyError";
-    private static ArrayList<Transaction> transactions = AUX_CLS.loadTransactions(filePathForBinDat);
+    private static ArrayList<Transaction> transactions = AUX_CLS_VENDING.loadTransactions(filePathForBinDat);
     private int transactionId;
     private String transactionStatus;
     private String dateAndTime;
@@ -29,7 +31,7 @@ public class Transaction implements Serializable {
     private int itemQuantity;
 
     public Transaction(int userIdInput, float userMoneyInput) {
-        this.transactionId = AUX_CLS.getNextTransactionId(filePathForBinDat);
+        this.transactionId = AUX_CLS_VENDING.getNextTransactionId(filePathForBinDat);
         this.dateAndTime = generateDateAndTime();
         item = Item.getItemById(userIdInput);
         this.inputMoney = userMoneyInput;
@@ -66,13 +68,13 @@ public class Transaction implements Serializable {
             }
         }
         transactions.add(this);
-        AUX_CLS.printListItems(transactions);
-        AUX_CLS.saveTransactions(transactions, filePathForBinDat);
-        AUX_CLS.saveTransactionsToCSV(transactions,filePathForCsvDat);
+        AUX_CLS_VENDING.printListItems(transactions);
+        AUX_CLS_VENDING.saveTransactions(transactions, filePathForBinDat);
+        AUX_CLS_VENDING.saveTransactionsToCSV(transactions, filePathForCsvDat);
     }
 
     public Transaction(float inputMoney) {
-        this.transactionId = AUX_CLS.getNextTransactionId(filePathForBinDat);
+        this.transactionId = AUX_CLS_VENDING.getNextTransactionId(filePathForBinDat);
         this.dateAndTime = generateDateAndTime();
         this.inputMoney = inputMoney;
         this.isSuccessful = false;
@@ -86,22 +88,25 @@ public class Transaction implements Serializable {
         this.change = inputMoney;
 
         transactions.add(this);
-        AUX_CLS.saveTransactions(transactions, filePathForBinDat);
-        AUX_CLS.saveTransactionsToCSV(transactions,filePathForCsvDat);
+        AUX_CLS_VENDING.saveTransactions(transactions, filePathForBinDat);
+        AUX_CLS_VENDING.saveTransactionsToCSV(transactions, filePathForCsvDat);
     }
 
-    public Transaction(int transactionId,String dateAndTime, String transactionStatus, float inputMoney, float change, int itemId, String itemName, float itemPrice, int remainingQuantity){
-        this.transactionId=transactionId;
-        this.dateAndTime=dateAndTime;
+    public Transaction(int transactionId, String dateAndTime, String transactionStatus, float inputMoney, float change, int itemId, String itemName, float itemPrice, int remainingQuantity) {
+        this.transactionId = transactionId;
+        this.dateAndTime = dateAndTime;
         this.transactionStatus = transactionStatus;
         this.inputMoney = inputMoney;
         this.change = change;
-        this.itemId=itemId;
+        this.itemId = itemId;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.remainingQuantity = remainingQuantity;
     }
 
+    public static ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
 
     private String generateDateAndTime() {
         LocalDateTime now = LocalDateTime.now();
@@ -118,10 +123,6 @@ public class Transaction implements Serializable {
         }
         change = Math.round(change * 100.0f) / 100.0f;
         return change;
-    }
-
-    public static ArrayList<Transaction> getTransactions() {
-        return transactions;
     }
 
     public int getTransactionId() {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Item implements Serializable {
     private static int cntId = 1;
     private static ArrayList<Item> items = new ArrayList<>();
-    private final int INITIAL_QUANTITY = 2;
+    private final int INITIAL_QUANTITY = 4;
     private String itemName;
     private int id;
     private float price;

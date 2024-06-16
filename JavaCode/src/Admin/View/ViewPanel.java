@@ -1,6 +1,6 @@
 package Admin.View;
 
-import VendingMachine.Model.AUX_CLS;
+import VendingMachine.Utility.AUX_CLS_VENDING;
 import VendingMachine.Model.Transaction;
 
 import javax.swing.*;
@@ -100,7 +100,7 @@ public class ViewPanel extends JPanel {
     }
 
     public void loadDataFromCSV(String filePath) {
-        List<String[]> records = AUX_CLS.readTransactionsFromCSV(filePath);
+        List<String[]> records = AUX_CLS_VENDING.readTransactionsFromCSV(filePath);
         for (String[] record : records) {
             model.addRow(record);
         }

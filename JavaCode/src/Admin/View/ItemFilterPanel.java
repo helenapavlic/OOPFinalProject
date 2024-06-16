@@ -32,9 +32,8 @@ public class ItemFilterPanel extends JPanel {
     }
 
     private void activatePanel() {
-        apply.setEnabled(false); // Initially disable the apply button
+        apply.setEnabled(false);
 
-        // Enable/Disable apply button based on input fields
         itemsList.addListSelectionListener(e -> checkInputs());
         useInStockFilter.addActionListener(e -> {
             boolean selected = useInStockFilter.isSelected();

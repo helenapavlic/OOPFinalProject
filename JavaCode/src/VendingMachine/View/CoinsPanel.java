@@ -1,7 +1,7 @@
 package VendingMachine.View;
 
-import VendingMachine.Model.CoinsPanelEvent;
 import VendingMachine.Controller.CoinsPanelListener;
+import VendingMachine.Model.CoinsPanelEvent;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -93,6 +93,4 @@ public class CoinsPanel extends JPanel {
     public void setCoinsPanelListener(CoinsPanelListener coinsPanelListener) {
         this.coinsPanelListener = coinsPanelListener;
     }
-
-
 }

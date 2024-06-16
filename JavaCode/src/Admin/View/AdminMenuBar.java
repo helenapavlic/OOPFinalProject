@@ -61,9 +61,9 @@ public class AdminMenuBar extends JMenuBar implements ActionListener {
         editMenu.setMnemonic('E');
         // set accelerators
         exportDataItem.setAccelerator(KeyStroke.getKeyStroke("control E"));
-        importAllDataItems.setAccelerator(KeyStroke.getKeyStroke("control A"));
+        importAllDataItems.setAccelerator(KeyStroke.getKeyStroke("control O"));
         importSelectedDataItems.setAccelerator(KeyStroke.getKeyStroke("control I"));
-        exitItem.setAccelerator(KeyStroke.getKeyStroke("control X"));
+        exitItem.setAccelerator(KeyStroke.getKeyStroke("control Q"));
 
         clearTableItem = new JMenuItem("Clear Table");
         clearFilterItems = new JMenuItem("Clear Filters");

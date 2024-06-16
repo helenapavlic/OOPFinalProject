@@ -2,6 +2,7 @@ package Admin.Controller;
 
 import Admin.Model.ItemFilterPanelEvent;
 import Admin.Model.TransactionFilterPanelEvent;
+import Admin.Utility.AUX_CLS_ADMIN;
 import Admin.View.AdminMenuBar;
 import Admin.View.FilterPanel;
 import Admin.View.ViewPanel;
@@ -11,13 +12,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class AdminMainFrame extends JFrame {
@@ -55,13 +50,25 @@ public class AdminMainFrame extends JFrame {
             @Override
             public void transactionFilterPanelEventOccurred(TransactionFilterPanelEvent transactionFilterPanelEvent) {
                 String[] filters = transactionFilterPanelEvent.getFilters();
-                List<Transaction> filteredTransactions = filterTransactions(filters);
-                adminViewPanel.addTransactions(filteredTransactions);
+                List<Transaction> filteredTransactions = AUX_CLS_ADMIN.filterTransactions(filePath, filters);
+                if (filteredTransactions.isEmpty()) {
+                    JOptionPane.showMessageDialog(AdminMainFrame.this, "No transactions found matching the filter criteria. Resetting filter.", "Filter", JOptionPane.INFORMATION_MESSAGE);
+                    adminFilterPanel.resetTransactionFilters();
+                } else {
+                    adminViewPanel.addTransactions(filteredTransactions);
+                }
             }
 
             @Override
             public void itemFilterPanelEventOccurred(ItemFilterPanelEvent itemFilterPanelEvent) {
-                // Handle item filter event if needed
+                String[] filters = itemFilterPanelEvent.getFilters();
+                List<Transaction> filteredTransactions = AUX_CLS_ADMIN.filterTransactionsByItems(filePath, filters);
+                if (filteredTransactions.isEmpty()) {
+                    JOptionPane.showMessageDialog(AdminMainFrame.this, "No transactions found matching the item filter criteria. Resetting item filter.", "Item Filter", JOptionPane.INFORMATION_MESSAGE);
+                    adminFilterPanel.resetItemFilters();
+                } else {
+                    adminViewPanel.addTransactions(filteredTransactions);
+                }
             }
         });
 
@@ -76,16 +83,20 @@ public class AdminMainFrame extends JFrame {
                         AdminMainFrame.this.dispose();
                     }
                 } else if (menuBarActionCommandString.equalsIgnoreCase("IMPORT_ALL")) {
-                    ArrayList<Transaction> transactions = readTransactionsFromCsv();
+                    ArrayList<Transaction> transactions = AUX_CLS_ADMIN.readTransactionsFromCsv(filePath);
                     adminViewPanel.loadDataFromCSV(filePath);
                     JOptionPane.showMessageDialog(AdminMainFrame.this, "Transactions loaded successfully from " + filePath, "Load Transactions", JOptionPane.INFORMATION_MESSAGE);
                 } else if (menuBarActionCommandString.equalsIgnoreCase("IMPORT_SELECTED")) {
                     int returnValue = fileChooser1.showOpenDialog(AdminMainFrame.this);
                     if (returnValue == JFileChooser.APPROVE_OPTION) {
                         File selectedFile = fileChooser1.getSelectedFile();
-                        filePath = selectedFile.getAbsolutePath();
-                        ArrayList<Transaction> transactions = readTransactionsFromCsv();
-//                        adminViewPanel.clearData();
+                        String selectedFilePath = selectedFile.getAbsolutePath();
+                        if (!selectedFilePath.endsWith(".csv")) {
+                            JOptionPane.showMessageDialog(AdminMainFrame.this, "Error: Selected file is not a CSV file.", "File Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        filePath = selectedFilePath;
+                        ArrayList<Transaction> transactions = AUX_CLS_ADMIN.readTransactionsFromCsv(filePath);
                         adminViewPanel.loadDataFromCSV(filePath);
                         JOptionPane.showMessageDialog(AdminMainFrame.this, "Transactions loaded successfully from " + filePath, "Load Transactions", JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -96,7 +107,7 @@ public class AdminMainFrame extends JFrame {
                         if (!fileToSave.getAbsolutePath().endsWith(".csv")) {
                             fileToSave = new File(fileToSave.getAbsolutePath() + ".csv");
                         }
-                        exportDataToCSV(fileToSave.getAbsolutePath());
+                        AUX_CLS_ADMIN.exportDataToCSV(fileToSave.getAbsolutePath(), adminViewPanel.getTransactionsFromTable());
                         JOptionPane.showMessageDialog(AdminMainFrame.this, "Transactions saved successfully to " + fileToSave.getAbsolutePath(), "Save Transactions", JOptionPane.INFORMATION_MESSAGE);
                     }
                 } else if (menuBarActionCommandString.equalsIgnoreCase("CLEAR_TABLE")) {
@@ -108,98 +119,6 @@ public class AdminMainFrame extends JFrame {
                 }
             }
         });
-    }
-
-    private List<Transaction> filterTransactions(String[] filters) {
-        ArrayList<Transaction> transactions = readTransactionsFromCsv();
-        List<Transaction> filteredTransactions = new ArrayList<>();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        Date dateFrom = null, dateTo = null;
-
-        try {
-            if (filters[0] != null) dateFrom = sdf.parse(filters[0]);
-            if (filters[1] != null) dateTo = sdf.parse(filters[1]);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String statusFilter = null;
-        if (filters[2] != null) {
-            switch (filters[2]) {
-                case "Successful transaction":
-                    statusFilter = "success";
-                    break;
-                case "Not enough money error":
-                    statusFilter = "moneyError";
-                    break;
-                case "Item out of stock error":
-                    statusFilter = "stockError";
-                    break;
-                case "Item not found error":
-                    statusFilter = "itemError";
-                    break;
-                case "Cancelled transaction":
-                    statusFilter = "cancelled";
-                    break;
-            }
-        }
-
-        for (Transaction transaction : transactions) {
-            boolean matches = true;
-
-            if (dateFrom != null && dateTo != null) {
-                Date transactionDate = null;
-                try {
-                    transactionDate = sdf.parse(transaction.getDateAndTime());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (transactionDate == null || transactionDate.before(dateFrom) || transactionDate.after(dateTo)) {
-                    matches = false;
-                }
-            } else if (dateTo != null) {
-                matches = false;
-            }
-
-            if (statusFilter != null && !statusFilter.equals(transaction.getTransactionStatus())) {
-                matches = false;
-            }
-
-            if (filters[3] != null && !filters[3].equals(String.valueOf(transaction.getTransactionId()))) {
-                matches = false;
-            }
-
-            if (matches) {
-                filteredTransactions.add(transaction);
-            }
-        }
-
-        return filteredTransactions;
-    }
-
-    private void exportDataToCSV(String absolutePath) {
-        try (FileWriter writer = new FileWriter(absolutePath)) {
-            // Write header
-            writer.write("ID,DATE AND TIME,STATUS,INPUT MONEY,CHANGE,ITEM ID,ITEM NAME,ITEM PRICE,QUANTITY\n");
-
-            // Write data from the table
-            List<Transaction> transactions = adminViewPanel.getTransactionsFromTable();
-            for (Transaction transaction : transactions) {
-                writer.write(transaction.getTransactionId() + "," +
-                        transaction.getDateAndTime() + "," +
-                        transaction.getTransactionStatus() + "," +
-                        transaction.getInputMoney() + "," +
-                        transaction.getChange() + "," +
-                        transaction.getItemId() + "," +
-                        transaction.getItemName() + "," +
-                        transaction.getItemPrice() + "," +
-                        transaction.getRemainingQuantity() + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error saving transactions: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
     private void layoutComponents() {
@@ -225,37 +144,5 @@ public class AdminMainFrame extends JFrame {
             fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("All files", "*.*"));
         }
         fileChooser.setFileFilter(filterCSV);
-    }
-
-    public ArrayList<Transaction> readTransactionsFromCsv() {
-        ArrayList<Transaction> transactions = new ArrayList<>();
-
-        try {
-            List<String> lines = Files.readAllLines(Paths.get(filePath));
-            // Skip header line
-            for (int i = 1; i < lines.size(); i++) {
-                String line = lines.get(i);
-                String[] values = line.split(",");
-
-                // Assuming the CSV file has columns: id, date, amount, description
-                int transactionId = Integer.parseInt(values[0]);
-                String dateAndTime = values[1];
-                String transactionStatus = values[2];
-                float inputMoney = Float.parseFloat(values[3]);
-                float change = Float.parseFloat(values[4]);
-                int itemId = Integer.parseInt(values[5]);
-                String itemName = values[6];
-                float itemPrice = Float.parseFloat(values[7]);
-                int remainingQuantity = Integer.parseInt(values[8]);
-
-                Transaction transaction = new Transaction(transactionId, dateAndTime, transactionStatus, inputMoney, change, itemId, itemName, itemPrice, remainingQuantity);
-                transactions.add(transaction);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error loading transactions: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        return transactions;
     }
 }

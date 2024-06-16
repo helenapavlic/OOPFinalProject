@@ -80,6 +80,10 @@ public class DisplayPanel extends JPanel {
         this.displayPanelListener = displayPanelListener;
         toolBarPanel.setDisplayPanelListener(displayPanelListener);
         numberPadPanel.setDisplayPanelListener(displayPanelListener);
+    }
+
+    public void activateCancelTransaction() {
+        toolBarPanel.activateCancel();
 
     }
 }

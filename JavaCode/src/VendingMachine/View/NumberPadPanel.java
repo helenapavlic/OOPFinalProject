@@ -1,8 +1,8 @@
 package VendingMachine.View;
 
 
-import VendingMachine.Model.DisplayPanelEvent;
 import VendingMachine.Controller.DisplayPanelListener;
+import VendingMachine.Model.DisplayPanelEvent;
 
 import javax.swing.*;
 import java.awt.*;

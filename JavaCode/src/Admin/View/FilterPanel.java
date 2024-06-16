@@ -23,19 +23,14 @@ public class FilterPanel extends JPanel {
 
     private void layoutComponents() {
         setLayout(new BorderLayout(5, 5));
-
-
         add(itemFilterPanel, BorderLayout.CENTER);
         add(transactionFilterPanel, BorderLayout.WEST);
-
     }
 
     private void InitComponents() {
         setPreferredSize(new Dimension(getWidth(), 250));
         transactionFilterPanel = new TransactionFilterPanel();
         itemFilterPanel = new ItemFilterPanel();
-
-
     }
 
     public void setFilterPanelListener(FilterPanelListener filterPanelListener) {
@@ -46,6 +41,14 @@ public class FilterPanel extends JPanel {
 
     public void ResetAll() {
         itemFilterPanel.reset();
+        transactionFilterPanel.reset();
+    }
+
+    public void resetItemFilters() {
+        itemFilterPanel.reset();
+    }
+
+    public void resetTransactionFilters() {
         transactionFilterPanel.reset();
     }
 }

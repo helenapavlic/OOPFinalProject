@@ -21,8 +21,7 @@ public class AdminLoginFrame extends JFrame {
         add(panel);
         setVisible(true);
 
-        // Postavi akciju za Control + Enter
-        KeyStroke keyStroke = KeyStroke.getKeyStroke("control ENTER");
+        KeyStroke keyStroke = KeyStroke.getKeyStroke("ENTER");
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, "login");
         panel.getActionMap().put("login", new AbstractAction() {
             @Override
@@ -77,8 +76,6 @@ public class AdminLoginFrame extends JFrame {
     private void handleLogin() {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
-
-        Admin admin = new Admin();
 
         boolean loginSuccessful = Admin.checkLogin(username, password);
         if (loginSuccessful) {
