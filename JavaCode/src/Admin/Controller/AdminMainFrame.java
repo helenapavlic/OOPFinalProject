@@ -1,5 +1,7 @@
 package Admin.Controller;
 
+import Admin.Model.ItemFilterPanelEvent;
+import Admin.Model.TransactionFilterPanelEvent;
 import Admin.View.AdminMenuBar;
 import Admin.View.FilterPanel;
 import Admin.View.ViewPanel;
@@ -47,6 +49,22 @@ public class AdminMainFrame extends JFrame {
     }
 
     private void activateComponents() {
+        adminFilterPanel.setFilterPanelListener(new FilterPanelListener() {
+            @Override
+            public void transactionFilterPanelEventOccurred(TransactionFilterPanelEvent transactionFilterPanelEvent) {
+
+            }
+
+            @Override
+            public void itemFilterPanelEventOccurred(ItemFilterPanelEvent itemFilterPanelEvent) {
+                String[] filters = itemFilterPanelEvent.getFilters();
+                System.out.println("Item Filter Panel Event Occurred:");
+                for (int i = 0; i < filters.length; i++) {
+                    System.out.println("Filter " + (i + 1) + ": " + filters[i]);
+                }
+            }
+        });
+
         adminMenuBar.setMenuBarListener(new AdminMenuBarListener() {
             @Override
             public void menuBarEventOccurred(String menuBarActionCommandString) {

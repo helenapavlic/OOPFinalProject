@@ -1,15 +1,22 @@
 package Admin.View;
 
+import Admin.Controller.FilterPanelListener;
+
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class FilterPanel extends JPanel {
-    private TransactionFilterFormPanel transactionFilterFormPanel;
-    private ItemFilterFormPanel itemFilterFormPanel;
+    private TransactionFilterPanel transactionFilterPanel;
+    private ItemFilterPanel itemFilterPanel;
+    private FilterPanelListener filterPanelListener;
     public FilterPanel() {
         InitComponents();
         layoutComponents();
+        activateComponents();
+    }
+
+    private void activateComponents() {
+
     }
 
 
@@ -17,17 +24,29 @@ public class FilterPanel extends JPanel {
         setLayout(new BorderLayout(5,5));
 
 
-        add(itemFilterFormPanel,BorderLayout.CENTER);
-        add(transactionFilterFormPanel,BorderLayout.WEST);
+        add(itemFilterPanel,BorderLayout.CENTER);
+        add(transactionFilterPanel,BorderLayout.WEST);
 
     }
 
     private void InitComponents() {
         setPreferredSize(new Dimension(getWidth(), 250));
-        transactionFilterFormPanel = new TransactionFilterFormPanel();
-        itemFilterFormPanel = new ItemFilterFormPanel();
+        transactionFilterPanel = new TransactionFilterPanel();
+        itemFilterPanel = new ItemFilterPanel();
 
 
     }
 
+    public void setFilterPanelListener(FilterPanelListener filterPanelListener) {
+        this.filterPanelListener = filterPanelListener;
+        transactionFilterPanel.setFilterPanelListener(filterPanelListener);
+        itemFilterPanel.setFilterPanelListener(filterPanelListener);
+    }
+
+    public void ResetAll() {
+//        todo: očisti sva polja, deaktiviraj apply gumbe, onemoguci radio buttons na item strani
+
+itemFilterPanel.reset();
+transactionFilterPanel.reset();
+    }
 }

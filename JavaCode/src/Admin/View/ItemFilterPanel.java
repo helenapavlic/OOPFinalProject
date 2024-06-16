@@ -1,13 +1,18 @@
 package Admin.View;
 
+import Admin.Controller.FilterPanelListener;
+import Admin.Model.ItemFilterPanelEvent;
 import VendingMachine.Model.Item;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
-public class ItemFilterFormPanel extends JPanel {
+public class ItemFilterPanel extends JPanel {
     private JList<String> itemsList;
     private JScrollPane itemsListScrollPane;
 
@@ -17,9 +22,9 @@ public class ItemFilterFormPanel extends JPanel {
     private ButtonGroup buttonGroup;
 
     private JButton apply;
+    private FilterPanelListener filterPanelListener;
 
-
-    public ItemFilterFormPanel() {
+    public ItemFilterPanel() {
         InitComponents();
         layoutComponents();
         decorate();
@@ -27,14 +32,50 @@ public class ItemFilterFormPanel extends JPanel {
     }
 
     private void activatePanel() {
+        apply.setEnabled(false); // Initially disable the apply button
 
+        // Enable/Disable apply button based on input fields
+        itemsList.addListSelectionListener(e -> checkInputs());
+        useInStockFilter.addActionListener(e -> {
+            boolean selected = useInStockFilter.isSelected();
+            itemInStock.setEnabled(selected);
+            itemOutOfStock.setEnabled(selected);
+            if (selected) {
+                itemOutOfStock.setSelected(true);
+            } else {
+                buttonGroup.clearSelection();
+            }
+            checkInputs();
+        });
+        itemInStock.addActionListener(e -> checkInputs());
+        itemOutOfStock.addActionListener(e -> checkInputs());
+
+        apply.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<String> selectedItems = itemsList.getSelectedValuesList();
+                String itemsFilter = !selectedItems.isEmpty() ? String.join(";", selectedItems) : null;
+                String useStockFilter = useInStockFilter.isSelected() ? "true" : null;
+                String stockStatusFilter = useInStockFilter.isSelected() ? (itemInStock.isSelected() ? "In stock" : "Out of stock") : null;
+
+                String[] filters = {itemsFilter, useStockFilter, stockStatusFilter};
+
+                if (filterPanelListener != null) {
+                    filterPanelListener.itemFilterPanelEventOccurred(new ItemFilterPanelEvent(this, filters));
+                }
+            }
+        });
+    }
+
+    private void checkInputs() {
+        boolean hasSelection = itemsList.getSelectedIndex() != -1 || useInStockFilter.isSelected();
+        apply.setEnabled(hasSelection);
     }
 
     private void decorate() {
         Border inner = BorderFactory.createTitledBorder("Item filter");
         Border outer = BorderFactory.createEmptyBorder(2, 2, 2, 2);
         setBorder(BorderFactory.createCompoundBorder(outer, inner));
-
     }
 
     private void layoutComponents() {
@@ -88,11 +129,9 @@ public class ItemFilterFormPanel extends JPanel {
         itemsListScrollPane = new JScrollPane(itemsList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         itemsListScrollPane.setBorder(BorderFactory.createEtchedBorder());
 
-
         useInStockFilter = new JCheckBox("Use item in stock filter");
         useInStockFilter.setActionCommand("USE_STOCK_FILTER");
         useInStockFilter.setSelected(false);
-
 
         itemInStock = new JRadioButton("In stock");
         itemOutOfStock = new JRadioButton("Out of stock");
@@ -108,4 +147,18 @@ public class ItemFilterFormPanel extends JPanel {
         apply = new JButton("Apply");
         apply.setActionCommand("APPLY_ITEM");
     }
+
+    public void setFilterPanelListener(FilterPanelListener filterPanelListener) {
+        this.filterPanelListener = filterPanelListener;
+    }
+
+    public void reset() {
+        itemsList.clearSelection();
+        useInStockFilter.setSelected(false);
+        itemInStock.setEnabled(false);
+        itemOutOfStock.setEnabled(false);
+        buttonGroup.clearSelection();
+        apply.setEnabled(false);
+    }
 }
+
