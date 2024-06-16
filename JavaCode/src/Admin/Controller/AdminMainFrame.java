@@ -36,6 +36,7 @@ public class AdminMainFrame extends JFrame {
         initComponents();
         layoutComponents();
         activateComponents();
+        setLogo();
     }
 
     private void initFileChoosers() {
@@ -132,6 +133,11 @@ public class AdminMainFrame extends JFrame {
         adminMenuBar = new AdminMenuBar();
         adminViewPanel = new ViewPanel();
         adminFilterPanel = new FilterPanel();
+    }
+
+    private void setLogo() {
+        ImageIcon imageIcon = new ImageIcon("Images/transaction.png");
+        setIconImage(imageIcon.getImage());
     }
 
     private void customizeJFileChooser(JFileChooser fileChooser, boolean onlyCSV) {

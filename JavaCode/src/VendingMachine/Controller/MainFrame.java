@@ -4,8 +4,12 @@ import Admin.Controller.AdminLoginListener;
 import Admin.Controller.AdminMainFrame;
 import Admin.Model.AdminLoginEvent;
 import Admin.View.AdminLoginFrame;
-import VendingMachine.Model.*;
-import VendingMachine.View.*;
+import VendingMachine.Model.CoinsPanelEvent;
+import VendingMachine.Model.DisplayPanelEvent;
+import VendingMachine.Model.Transaction;
+import VendingMachine.View.CoinsPanel;
+import VendingMachine.View.DisplayPanel;
+import VendingMachine.View.ItemsPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,11 +25,6 @@ public class MainFrame extends JFrame {
         initComps();
         layoutComps();
         activateFrame();
-    }
-
-    private void setLogo() {
-        ImageIcon imageIcon = new ImageIcon("Images/vending-logo-img.jpg");
-        setIconImage(imageIcon.getImage());
     }
 
     private void activateFrame() {
@@ -85,20 +84,12 @@ public class MainFrame extends JFrame {
                             }
                         }
                     });
-
-
                 } else {
                     displayPanel.activateInactiveButtons();
                     displayPanel.printId(action);
                 }
             }
         });
-
-
-    }
-
-    private void openAdminFrame() {
-        new AdminMainFrame();
     }
 
     private void layoutComps() {
@@ -136,5 +127,14 @@ public class MainFrame extends JFrame {
         itemsPanel = new ItemsPanel();
         coinsPanel = new CoinsPanel();
         displayPanel = new DisplayPanel();
+    }
+
+    private void setLogo() {
+        ImageIcon imageIcon = new ImageIcon("Images/vending-machine.png");
+        setIconImage(imageIcon.getImage());
+    }
+
+    private void openAdminFrame() {
+        new AdminMainFrame();
     }
 }
