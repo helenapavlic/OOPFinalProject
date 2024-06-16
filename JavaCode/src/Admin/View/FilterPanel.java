@@ -9,6 +9,7 @@ public class FilterPanel extends JPanel {
     private TransactionFilterPanel transactionFilterPanel;
     private ItemFilterPanel itemFilterPanel;
     private FilterPanelListener filterPanelListener;
+
     public FilterPanel() {
         InitComponents();
         layoutComponents();
@@ -21,11 +22,11 @@ public class FilterPanel extends JPanel {
 
 
     private void layoutComponents() {
-        setLayout(new BorderLayout(5,5));
+        setLayout(new BorderLayout(5, 5));
 
 
-        add(itemFilterPanel,BorderLayout.CENTER);
-        add(transactionFilterPanel,BorderLayout.WEST);
+        add(itemFilterPanel, BorderLayout.CENTER);
+        add(transactionFilterPanel, BorderLayout.WEST);
 
     }
 
@@ -44,9 +45,7 @@ public class FilterPanel extends JPanel {
     }
 
     public void ResetAll() {
-//        todo: očisti sva polja, deaktiviraj apply gumbe, onemoguci radio buttons na item strani
-
-itemFilterPanel.reset();
-transactionFilterPanel.reset();
+        itemFilterPanel.reset();
+        transactionFilterPanel.reset();
     }
 }

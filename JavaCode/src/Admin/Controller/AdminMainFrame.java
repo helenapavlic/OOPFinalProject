@@ -15,7 +15,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AdminMainFrame extends JFrame {
@@ -53,19 +55,13 @@ public class AdminMainFrame extends JFrame {
             @Override
             public void transactionFilterPanelEventOccurred(TransactionFilterPanelEvent transactionFilterPanelEvent) {
                 String[] filters = transactionFilterPanelEvent.getFilters();
-                System.out.println("Transaction Filter Panel Event Occurred:");
-                for (int i = 0; i < filters.length; i++) {
-                    System.out.println("Filter " + (i + 1) + ": " + filters[i]);
-                }
+                List<Transaction> filteredTransactions = filterTransactions(filters);
+                adminViewPanel.addTransactions(filteredTransactions);
             }
 
             @Override
             public void itemFilterPanelEventOccurred(ItemFilterPanelEvent itemFilterPanelEvent) {
-                String[] filters = itemFilterPanelEvent.getFilters();
-                System.out.println("Item Filter Panel Event Occurred:");
-                for (int i = 0; i < filters.length; i++) {
-                    System.out.println("Filter " + (i + 1) + ": " + filters[i]);
-                }
+                // Handle item filter event if needed
             }
         });
 
@@ -105,13 +101,81 @@ public class AdminMainFrame extends JFrame {
                     }
                 } else if (menuBarActionCommandString.equalsIgnoreCase("CLEAR_TABLE")) {
                     adminViewPanel.clearData();
-                    JOptionPane.showMessageDialog(AdminMainFrame.this, "Table data cleared.", "Clear Table", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(AdminMainFrame.this, "Table data cleared.");
                 } else if (menuBarActionCommandString.equalsIgnoreCase("CLEAR_FILTER")) {
                     adminFilterPanel.ResetAll();
-                    JOptionPane.showMessageDialog(AdminMainFrame.this, "Filter reset.", "Reset Filter", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(AdminMainFrame.this, "Filter reset.");
                 }
             }
         });
+    }
+
+    private List<Transaction> filterTransactions(String[] filters) {
+        ArrayList<Transaction> transactions = readTransactionsFromCsv();
+        List<Transaction> filteredTransactions = new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        Date dateFrom = null, dateTo = null;
+
+        try {
+            if (filters[0] != null) dateFrom = sdf.parse(filters[0]);
+            if (filters[1] != null) dateTo = sdf.parse(filters[1]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String statusFilter = null;
+        if (filters[2] != null) {
+            switch (filters[2]) {
+                case "Successful transaction":
+                    statusFilter = "success";
+                    break;
+                case "Not enough money error":
+                    statusFilter = "moneyError";
+                    break;
+                case "Item out of stock error":
+                    statusFilter = "stockError";
+                    break;
+                case "Item not found error":
+                    statusFilter = "itemError";
+                    break;
+                case "Cancelled transaction":
+                    statusFilter = "cancelled";
+                    break;
+            }
+        }
+
+        for (Transaction transaction : transactions) {
+            boolean matches = true;
+
+            if (dateFrom != null && dateTo != null) {
+                Date transactionDate = null;
+                try {
+                    transactionDate = sdf.parse(transaction.getDateAndTime());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (transactionDate == null || transactionDate.before(dateFrom) || transactionDate.after(dateTo)) {
+                    matches = false;
+                }
+            } else if (dateTo != null) {
+                matches = false;
+            }
+
+            if (statusFilter != null && !statusFilter.equals(transaction.getTransactionStatus())) {
+                matches = false;
+            }
+
+            if (filters[3] != null && !filters[3].equals(String.valueOf(transaction.getTransactionId()))) {
+                matches = false;
+            }
+
+            if (matches) {
+                filteredTransactions.add(transaction);
+            }
+        }
+
+        return filteredTransactions;
     }
 
     private void exportDataToCSV(String absolutePath) {

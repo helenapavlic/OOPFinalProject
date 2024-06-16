@@ -67,7 +67,6 @@ public class ViewPanel extends JPanel {
     }
 
     private void setColumnWidths() {
-//        int totalWidth = 850;
         int[] columnWidths = {50, 150, 100, 100, 90, 50, 140, 100, 65}; // Postavi širinu svakog stupca
 
         TableColumnModel columnModel = table.getColumnModel();
@@ -129,5 +128,20 @@ public class ViewPanel extends JPanel {
         }
         return transactions;
     }
-}
 
+    public void addTransactions(List<Transaction> transactions) {
+        for (Transaction transaction : transactions) {
+            model.addRow(new Object[]{
+                    transaction.getTransactionId(),
+                    transaction.getDateAndTime(),
+                    transaction.getTransactionStatus(),
+                    transaction.getInputMoney(),
+                    transaction.getChange(),
+                    transaction.getItemId(),
+                    transaction.getItemName(),
+                    transaction.getItemPrice(),
+                    transaction.getRemainingQuantity()
+            });
+        }
+    }
+}
