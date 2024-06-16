@@ -52,7 +52,11 @@ public class AdminMainFrame extends JFrame {
         adminFilterPanel.setFilterPanelListener(new FilterPanelListener() {
             @Override
             public void transactionFilterPanelEventOccurred(TransactionFilterPanelEvent transactionFilterPanelEvent) {
-
+                String[] filters = transactionFilterPanelEvent.getFilters();
+                System.out.println("Transaction Filter Panel Event Occurred:");
+                for (int i = 0; i < filters.length; i++) {
+                    System.out.println("Filter " + (i + 1) + ": " + filters[i]);
+                }
             }
 
             @Override
